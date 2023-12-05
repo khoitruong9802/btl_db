@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2022 at 11:19 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Dec 05, 2023 at 09:41 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `cmnd` char(12) NOT NULL,
+  `gender` bit(3) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `country` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `name`, `cmnd`, `gender`, `address`, `country`) VALUES
+(4, 'khoi', '46467383888', b'111', 'kdfhdkhfkdhfoeoifh', 'viet name');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `emp_login`
 --
 
@@ -31,7 +53,7 @@ CREATE TABLE `emp_login` (
   `empid` int(100) NOT NULL,
   `Emp_Email` varchar(50) NOT NULL,
   `Emp_Password` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `emp_login`
@@ -61,7 +83,7 @@ CREATE TABLE `payment` (
   `meal` varchar(30) NOT NULL,
   `mealtotal` double(8,2) NOT NULL,
   `finaltotal` double(8,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `payment`
@@ -77,33 +99,11 @@ INSERT INTO `payment` (`id`, `Name`, `Email`, `RoomType`, `Bed`, `NoofRoom`, `ci
 --
 
 CREATE TABLE `room` (
-  `id` int(30) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `bedding` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `room`
---
-
-INSERT INTO `room` (`id`, `type`, `bedding`) VALUES
-(4, 'Superior Room', 'Single'),
-(6, 'Superior Room', 'Triple'),
-(7, 'Superior Room', 'Quad'),
-(8, 'Deluxe Room', 'Single'),
-(9, 'Deluxe Room', 'Double'),
-(10, 'Deluxe Room', 'Triple'),
-(11, 'Guest House', 'Single'),
-(12, 'Guest House', 'Double'),
-(13, 'Guest House', 'Triple'),
-(14, 'Guest House', 'Quad'),
-(16, 'Superior Room', 'Double'),
-(20, 'Single Room', 'Single'),
-(22, 'Superior Room', 'Single'),
-(23, 'Deluxe Room', 'Single'),
-(24, 'Deluxe Room', 'Triple'),
-(27, 'Guest House', 'Double'),
-(30, 'Deluxe Room', 'Single');
+  `id` char(5) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `roomnumber` int(11) NOT NULL,
+  `floor` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,7 @@ INSERT INTO `room` (`id`, `type`, `bedding`) VALUES
 --
 
 CREATE TABLE `roombook` (
-  `id` int(10) NOT NULL,
+  `id` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Country` varchar(30) NOT NULL,
@@ -125,14 +125,54 @@ CREATE TABLE `roombook` (
   `cout` date NOT NULL,
   `nodays` int(50) NOT NULL,
   `stat` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `roombook`
+-- Table structure for table `roomtype`
 --
 
-INSERT INTO `roombook` (`id`, `Name`, `Email`, `Country`, `Phone`, `RoomType`, `Bed`, `Meal`, `NoofRoom`, `cin`, `cout`, `nodays`, `stat`) VALUES
-(41, 'Tushar pankhaniya', 'pankhaniyatushar9@gmail.com', 'India', '9313346569', 'Single Room', 'Single', 'Room only', '1', '2022-11-09', '2022-11-10', 1, 'Confirm');
+CREATE TABLE `roomtype` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `price` int(11) NOT NULL,
+  `detail` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roomtypereq`
+--
+
+CREATE TABLE `roomtypereq` (
+  `roomtypeid` int(11) NOT NULL,
+  `roombookid` int(11) NOT NULL,
+  `numberofroom` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service`
+--
+
+CREATE TABLE `service` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `cost` int(11) NOT NULL,
+  `unit` char(20) NOT NULL,
+  `detail` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `service`
+--
+
+INSERT INTO `service` (`id`, `name`, `cost`, `unit`, `detail`) VALUES
+(4, 'boi', 50000, '1 gio', 'khong co mo ta'),
+(5, 'boi', 50000, '1 gio', 'khong co mo ta');
 
 -- --------------------------------------------------------
 
@@ -145,13 +185,15 @@ CREATE TABLE `signup` (
   `Username` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Password` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `signup`
 --
+
 INSERT INTO `signup` (`UserID`, `Username`, `Email`, `Password`) VALUES
-(1, 'Tushar Pankhaniya', 'tusharpankhaniya2202@gmail.com', '123');
+(1, 'Tushar Pankhaniya', 'tusharpankhaniya2202@gmail.com', '123'),
+(7, 'khoi', 'khoi@gmail.com', '1234');
 
 -- --------------------------------------------------------
 
@@ -163,7 +205,7 @@ CREATE TABLE `staff` (
   `id` int(30) NOT NULL,
   `name` varchar(30) NOT NULL,
   `work` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `staff`
@@ -184,6 +226,12 @@ INSERT INTO `staff` (`id`, `name`, `work`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `emp_login`
@@ -210,6 +258,25 @@ ALTER TABLE `roombook`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `roomtype`
+--
+ALTER TABLE `roomtype`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `roomtypereq`
+--
+ALTER TABLE `roomtypereq`
+  ADD PRIMARY KEY (`roomtypeid`,`roombookid`),
+  ADD KEY `roombookid` (`roombookid`);
+
+--
+-- Indexes for table `service`
+--
+ALTER TABLE `service`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `signup`
 --
 ALTER TABLE `signup`
@@ -226,34 +293,57 @@ ALTER TABLE `staff`
 --
 
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `emp_login`
 --
 ALTER TABLE `emp_login`
   MODIFY `empid` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `room`
---
-ALTER TABLE `room`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
 -- AUTO_INCREMENT for table `roombook`
 --
 ALTER TABLE `roombook`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `roomtype`
+--
+ALTER TABLE `roomtype`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `service`
+--
+ALTER TABLE `service`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `signup`
 --
 ALTER TABLE `signup`
-  MODIFY `UserID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `UserID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
   MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `roomtypereq`
+--
+ALTER TABLE `roomtypereq`
+  ADD CONSTRAINT `roomtypereq_ibfk_1` FOREIGN KEY (`roomtypeid`) REFERENCES `roomtype` (`id`),
+  ADD CONSTRAINT `roomtypereq_ibfk_2` FOREIGN KEY (`roombookid`) REFERENCES `roombook` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
