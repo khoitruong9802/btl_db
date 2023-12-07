@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include '../../config.php';
 
 ?>
 
@@ -18,40 +18,38 @@ include '../config.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- sweet alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="./css/service.css">
+    <link rel="stylesheet" href="roomtype.css">
     <title>BlueBird - Admin</title>
 </head>
 
 <body>
-    <!-- servicedetailpanel -->
+    <!-- roomtypedetailpanel -->
 
-    <div id="servicedetailpanel">
-        <form action="" method="POST" class="servicedetailpanelform">
+    <div id="roomtypedetailpanel">
+        <form action="" method="POST" class="roomtypedetailpanelform">
             <div class="head">
-                <h3>SERVICE</h3>
-                <i class="fa-solid fa-circle-xmark" onclick="addserviceclose()"></i>
+                <h3>roomtype</h3>
+                <i class="fa-solid fa-circle-xmark" onclick="addroomtypeclose()"></i>
             </div>
             <div class="middle">
-                <div class="serviceinfo">
-                    <h4>Service information</h4>
-                    <input type="text" name="Name" placeholder="Enter service name" required>
-                    <input type="text" name="Cost" placeholder="Enter cost" required>
-                    <input type="text" name="Unit" placeholder="Enter unit" required>
+                <div class="roomtypeinfo">
+                    <h4>roomtype information</h4>
+                    <input type="text" name="Name" placeholder="Enter roomtype name" required>
+                    <input type="text" name="Price" placeholder="Enter price" required>
                     <input type="text" name="Detail" placeholder="Enter detail" required>
                 </div>
 
             </div>
             <div class="footer">
-                <button class="btn btn-success" name="servicedetailsubmit">Submit</button>
+                <button class="btn btn-success" name="roomtypedetailsubmit">Submit</button>
             </div>
         </form> 
 
         <!-- ==== room book php ====-->
         <?php       
-            if (isset($_POST['servicedetailsubmit'])) {
+            if (isset($_POST['roomtypedetailsubmit'])) {
                 $Name = $_POST['Name'];
-                $Cost = $_POST['Cost'];
-                $Unit = $_POST['Unit'];
+                $Price = $_POST['Price'];
                 $Detail = $_POST['Detail'];
 
                 if (false) {
@@ -63,7 +61,7 @@ include '../config.php';
                 }
                 else{
                     $sta = "NotConfirm";
-                    $sql = "INSERT INTO service(name,cost,unit,detail) VALUES ('$Name','$Cost','$Unit','$Detail')";
+                    $sql = "INSERT INTO roomtype(name,price,detail) VALUES ('$Name','$Price','$Detail')";
                     $result = mysqli_query($conn, $sql);
 
                     // if($f1=="NO")
@@ -77,7 +75,7 @@ include '../config.php';
                     // else if($f2=="NO")
                     // {
                     //     echo "<script>swal({
-                    //         title: 'service House is not available',
+                    //         title: 'roomtype House is not available',
                     //         icon: 'error',
                     //     });
                     //     </script>";
@@ -123,7 +121,7 @@ include '../config.php';
     <!-- ================================================= -->
     <div class="searchsection">
         <input type="text" name="search_bar" id="search_bar" placeholder="search..." onkeyup="searchFun()">
-        <button class="adduser" id="adduser" onclick="addserviceopen()"><i class="fa-solid fa-bookmark"></i> Add</button>
+        <button class="adduser" id="adduser" onclick="addroomtypeopen()"><i class="fa-solid fa-bookmark"></i> Add</button>
         <form action="./exportdata.php" method="post">
             <button class="exportexcel" id="exportexcel" name="exportexcel" type="submit"><i class="fa-solid fa-file-arrow-down"></i></button>
         </form>
@@ -131,7 +129,7 @@ include '../config.php';
 
     <div class="roombooktable" class="table-responsive-xl">
         <?php
-            $roombooktablesql = "SELECT * FROM `service`";
+            $roombooktablesql = "SELECT * FROM `roomtype`";
             $roombookresult = mysqli_query($conn, $roombooktablesql);
             $nums = mysqli_num_rows($roombookresult);
         ?>
@@ -140,8 +138,7 @@ include '../config.php';
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Cost</th>
-                    <th scope="col">Unit</th>
+                    <th scope="col">Price</th>
                     <th scope="col">Detail</th>
                     <th scope="col" class="action">Action</th>
                     <!-- <th>Delete</th> -->
@@ -155,12 +152,11 @@ include '../config.php';
                 <tr>
                     <td><?php echo $res['id'] ?></td>
                     <td><?php echo $res['name'] ?></td>
-                    <td><?php echo $res['cost'] ?></td>
-                    <td><?php echo $res['unit'] ?></td>
+                    <td><?php echo $res['price'] ?></td>
                     <td><?php echo $res['detail'] ?></td>
                     <td class="action">
-                        <a href="serviceedit.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Edit</button></a>
-                        <a href="servicedelete.php?id=<?php echo $res['id'] ?>"><button class='btn btn-danger'>Delete</button></a>
+                        <a href="roomtypeedit.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Edit</button></a>
+                        <a href="roomtypedelete.php?id=<?php echo $res['id'] ?>"><button class='btn btn-danger'>Delete</button></a>
                     </td>
                 </tr>
             <?php
@@ -170,7 +166,7 @@ include '../config.php';
         </table>
     </div>
 </body>
-<script src="./javascript/service.js"></script>
+<script src="roomtype.js"></script>
 
 
 

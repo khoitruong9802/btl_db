@@ -101,27 +101,27 @@ include '../config.php';
         $sr = 0;
         $dr = 0;
 
-        while($rrow=mysqli_fetch_array($rre))
-        {
-            $r = $r + 1;
-            $s = $rrow['type'];
-            if($s=="Superior Room")
-            {
-                $sc = $sc+ 1;
-            }
-            if($s=="Guest House")
-            {
-                $gh = $gh + 1;
-            }
-            if($s=="Single Room" )
-            {
-                $sr = $sr + 1;
-            }
-            if($s=="Deluxe Room" )
-            {
-                $dr = $dr + 1;
-            }
-        }
+        // while($rrow=mysqli_fetch_array($rre))
+        // {
+        //     $r = $r + 1;
+        //     $s = $rrow['type'];
+        //     if($s=="Superior Room")
+        //     {
+        //         $sc = $sc+ 1;
+        //     }
+        //     if($s=="Guest House")
+        //     {
+        //         $gh = $gh + 1;
+        //     }
+        //     if($s=="Single Room" )
+        //     {
+        //         $sr = $sr + 1;
+        //     }
+        //     if($s=="Deluxe Room" )
+        //     {
+        //         $dr = $dr + 1;
+        //     }
+        // }
 
         $csql ="select * from payment";
         $cre= mysqli_query($conn,$csql);

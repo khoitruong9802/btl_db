@@ -1,30 +1,32 @@
 <?php
 
-include '../config.php';
+include '../../config.php';
 
 // fetch room data
 $id = $_GET['id'];
 
-$sql ="Select * from roomtype where id = '$id'";
+$sql ="Select * from service where id = '$id'";
 $re = mysqli_query($conn,$sql);
 while($row=mysqli_fetch_array($re))
 {
     $Name = $row['name'];
-    $Price = $row['price'];
+    $Cost = $row['cost'];
+    $Unit = $row['unit'];
     $Detail = $row['detail'];
 }
 
 if (isset($_POST['guestdetailedit'])) {
     $Name = $_POST['Name'];
-    $Price = $_POST['Price'];
+    $Cost = $_POST['Cost'];
+    $Unit = $_POST['Unit'];
     $Detail = $_POST['Detail'];
 
-    $sql = "UPDATE roomtype SET name = '$Name',price = '$Price',detail='$Detail' WHERE id = '$id'";
+    $sql = "UPDATE service SET name = '$Name',cost = '$Cost',unit='$Unit',detail='$Detail' WHERE id = '$id'";
 
     $result = mysqli_query($conn, $sql);
 
     if (true) {
-            header("Location:roomtype.php");
+            header("Location:service.php");
     }
 
 }
@@ -44,7 +46,7 @@ if (isset($_POST['guestdetailedit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- sweet alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="./css/roombook.css">
+    <link rel="stylesheet" href="../css/roombook.css">
     <style>
         #editpanel{
             position : fixed;
@@ -74,14 +76,15 @@ if (isset($_POST['guestdetailedit'])) {
     <div id="editpanel">
         <form method="POST" class="guestdetailpanelform">
             <div class="head">
-                <h3>EDIT ROOMTYPE</h3>
-                <a href="./roomtype.php"><i class="fa-solid fa-circle-xmark"></i></a>
+                <h3>EDIT SERVICE</h3>
+                <a href="./service.php"><i class="fa-solid fa-circle-xmark"></i></a>
             </div>
             <div class="middle">
                 <div class="guestinfo">
-                    <h4>roomtype information</h4>
-                    <input type="text" name="Name" placeholder="Enter roomtype name" value="<?php echo $Name ?>">
-                    <input type="text" name="Price" placeholder="Enter price" value="<?php echo $Price ?>">
+                    <h4>Service information</h4>
+                    <input type="text" name="Name" placeholder="Enter service name" value="<?php echo $Name ?>">
+                    <input type="text" name="Cost" placeholder="Enter cost" value="<?php echo $Cost ?>">
+                    <input type="text" name="Unit" placeholder="Enter unit" value="<?php echo $Unit ?>">
                     <input type="text" name="Detail" placeholder="Enter detail" value="<?php echo $Detail ?>">
                 </div>
 

@@ -1,32 +1,34 @@
 <?php
 
-include '../config.php';
+include '../../config.php';
 
 // fetch room data
 $id = $_GET['id'];
 
-$sql ="Select * from service where id = '$id'";
+$sql ="Select * from customer where id = '$id'";
 $re = mysqli_query($conn,$sql);
 while($row=mysqli_fetch_array($re))
 {
     $Name = $row['name'];
-    $Cost = $row['cost'];
-    $Unit = $row['unit'];
-    $Detail = $row['detail'];
+    $CMND = $row['cmnd'];
+    $Gender = $row['gender'];
+    $Address = $row['address'];
+    $Country = $row['country'];
 }
 
 if (isset($_POST['guestdetailedit'])) {
     $Name = $_POST['Name'];
-    $Cost = $_POST['Cost'];
-    $Unit = $_POST['Unit'];
-    $Detail = $_POST['Detail'];
+    $CMND = $_POST['CMND'];
+    $Gender = $_POST['Gender'];
+    $Address = $_POST['Address'];
+    $Country = $_POST['Country'];
 
-    $sql = "UPDATE service SET name = '$Name',cost = '$Cost',unit='$Unit',detail='$Detail' WHERE id = '$id'";
+    $sql = "UPDATE customer SET name = '$Name',cmnd = '$CMND',gender='$Gender',address='$Address',country='$Country' WHERE id = '$id'";
 
     $result = mysqli_query($conn, $sql);
 
     if (true) {
-            header("Location:service.php");
+            header("Location:customer.php");
     }
 
 }
@@ -46,7 +48,7 @@ if (isset($_POST['guestdetailedit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- sweet alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="./css/roombook.css">
+    <link rel="stylesheet" href="../css/roombook.css">
     <style>
         #editpanel{
             position : fixed;
@@ -81,11 +83,12 @@ if (isset($_POST['guestdetailedit'])) {
             </div>
             <div class="middle">
                 <div class="guestinfo">
-                    <h4>Service information</h4>
-                    <input type="text" name="Name" placeholder="Enter service name" value="<?php echo $Name ?>">
-                    <input type="text" name="Cost" placeholder="Enter cost" value="<?php echo $Cost ?>">
-                    <input type="text" name="Unit" placeholder="Enter unit" value="<?php echo $Unit ?>">
-                    <input type="text" name="Detail" placeholder="Enter detail" value="<?php echo $Detail ?>">
+                    <h4>Customer information</h4>
+                    <input type="text" name="Name" placeholder="Enter customer name" value="<?php echo $Name ?>">
+                    <input type="text" name="CMND" placeholder="Enter CMND" value="<?php echo $CMND ?>">
+                    <input type="text" name="Gender" placeholder="Enter gender" value="<?php echo $Gender ?>">
+                    <input type="text" name="Address" placeholder="Enter address" value="<?php echo $Address ?>">
+                    <input type="text" name="Country" placeholder="Enter country" value="<?php echo $Country ?>">
                 </div>
 
             </div>
