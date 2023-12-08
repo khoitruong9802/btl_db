@@ -57,6 +57,7 @@ if($usermail == true){
             <li class="pagebtn"><img src="../image/icon/bedroom.png">&nbsp&nbsp&nbsp Rooms</li>
             <li class="pagebtn"><img src="../image/icon/bedroom.png">&nbsp&nbsp&nbsp Room Book New</li>
             <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Staff</li>
+            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Rent Room</li>
         </ul>
     </nav>
 
@@ -71,6 +72,7 @@ if($usermail == true){
         <iframe class="frames frame4" src="./room/room.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./roombook/roombook.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./staff.php" frameborder="0"></iframe>
+        <iframe class="frames frame4" src="./rentroom/rentroom.php" frameborder="0"></iframe>
     </div>
 </body>
 

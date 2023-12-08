@@ -158,16 +158,7 @@ if (mysqli_num_rows($re) > 0) {
                 // }
             }
 
-            // $room_list = array(); 
-            // foreach ($_POST as $room => $value) {
-            //     if (substr($room, 0, 4) == "room") {
-            //         $room_list[] = (int)substr($room, 4);
-            //     }
-            // }
-            // $sql = "INSERT INTO assignroom(order_id, room_id) VALUES";
-            // foreach ($room_list as $value) {
-            //     $sql .= "('','$value'),";
-            // }
+            
         }
         ?>
     </div>
