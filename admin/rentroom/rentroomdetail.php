@@ -90,7 +90,7 @@ $list_service_arr = mysqli_query($conn, $sql);
         <form method="POST" class="rentroomdetailpanelform">
             <div class="head">
                 <h3>EDIT RESERVATION</h3>
-                <a href="./roombook.php"><i class="fa-solid fa-circle-xmark"></i></a>
+                <a href="./rentroom.php"><i class="fa-solid fa-circle-xmark"></i></a>
             </div>
             <div class="middle">
                 <div class="rentroominfo">
@@ -101,7 +101,7 @@ $list_service_arr = mysqli_query($conn, $sql);
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-row align-items-center">
                                         <label class="mx-2" for="bed">Service: </label>
-                                        <select name="servicename" class="form-control selectinput">
+                                        <select name="servicename" class="form-control selectinput" required>
                                             <option value selected></option>
                                             <?php
                                             foreach ($service_arr as $key => $value) :
@@ -113,11 +113,11 @@ $list_service_arr = mysqli_query($conn, $sql);
                                     </div>
                                     <div class="d-flex flex-row align-items-center">
                                         <label class="mx-2" for="troom">Number: </label>
-                                        <input type="text" name="numberservice" class="form-control">
+                                        <input type="text" name="numberservice" class="form-control" required>
                                     </div>
                                     <div class="d-flex flex-row align-items-center">
                                         <label class="mx-2" for="troom">Payment status: </label>
-                                        <select name="paymentstatus" class="form-control selectinput">
+                                        <select name="paymentstatus" class="form-control selectinput" required>
                                             <option value selected>Payment</option>
                                             <option value=1>True</option>
                                             <option value=0>False</option>

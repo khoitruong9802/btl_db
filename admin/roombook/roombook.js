@@ -1,9 +1,9 @@
 var detailpanel = document.getElementById("guestdetailpanel");
 
-adduseropen = () => {
+roombookopen = () => {
     detailpanel.style.display = "flex";
 }
-adduserclose = () => {
+roombookclose = () => {
     detailpanel.style.display = "none";
 }
 
@@ -33,12 +33,18 @@ const searchFun = () => {
 
 const add_booking_day = () => {
     let today = new Date();
+    let tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
     let formattedDate = today.toISOString().split('T')[0];
+    let formattedDate1 = tomorrow.toISOString().split('T')[0];
     document.getElementById("hiddenDateInput").value = formattedDate;
+    document.getElementById("checkinday").value = formattedDate;
+    document.getElementById("checkoutday").value = formattedDate1;
 }
-add_booking_day();
 
-const search_room = (room_type) => {
+
+const search_room = () => {
+    room_type = document.getElementById('room-type-selected');
     if (room_type.value == "-1") {
         let elements = document.querySelectorAll("#display-list-room *");
         // console.log(elements);
@@ -56,6 +62,73 @@ const search_room = (room_type) => {
             element.style.display = "";
         });
     }
+    // console.log("check run");
+    hide_rooms = [];
+
+    let check_in_day = document.getElementById("checkinday").value;
+    let check_out_day = document.getElementById("checkoutday").value;
+    check_in_day = new Date(check_in_day);
+    check_out_day = new Date(check_out_day);
+    // console.log(check_in_day);
+    // console.log(check_out_day);
+    if (check_in_day >= check_out_day) {
+        let elements = document.querySelectorAll("#display-list-room *");
+        // console.log(elements);
+        elements.forEach(element => {
+            element.style.display = "none";
+        });
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '../api/searchRoom.php', true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.send();
+
+    xhr.onload = () => {
+        let message = JSON.parse(xhr.response);
+        // console.log(message);
+        mlen = message.length;
+        for (let i = 0; i < mlen; i++) {
+            let room_number = message[i]['room_id'];
+            let ch_in = message[i]['echeckinday'];
+            let ch_out = message[i]['echeckoutday'];
+            ch_in = new Date(ch_in);
+            ch_out = new Date(ch_out);
+            if (ch_in >= check_out_day || ch_out <= check_in_day) {
+            } else {
+                hide_rooms.push(room_number);
+            }
+        }
+        // console.log(hide_rooms);
+        hide_rooms.forEach(function(room_num) {
+            hide_room1 = document.getElementById('cbroom' + room_num);
+            hide_room2 = document.getElementById('lbroom' + room_num);
+            hide_room1.style.display = "none";
+            hide_room2.style.display = "none";
+            // console.log(hide_room1);
+            // console.log(hide_room2);
+        });
+    }
 }
 
+var checkinpanel = document.getElementById("checkindetailpanel");
 
+checkinopen = () => {
+    checkinpanel.style.display = "flex";
+}
+checkinclose = () => {
+    checkinpanel.style.display = "none";
+}
+
+const check_in = (id) => {
+    checkinopen();
+    console.log("Check in for id = " + id);
+}
+
+const auto_run = () => {
+    add_booking_day();
+    search_room();
+}
+
+auto_run();

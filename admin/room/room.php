@@ -91,49 +91,34 @@ include '../../config.php';
 
     <div class="room">
         <?php
-        $sql = "select * from room";
-        $re = mysqli_query($conn, $sql)
+        $sql = "select room.id, room.status, room.roomnumber, room.floor, roomtype.name 
+        from room 
+        JOIN roomtype ON roomtype.id = room.roomtype
+        order by room.roomnumber";
+        $re = mysqli_query($conn, $sql);
         ?>
         <?php
         while ($row = mysqli_fetch_array($re)) {
-            $status = $row['status'] ? "Available" : "Not Available";
-            $id = $row['roomtype'];
-            if ($id == 0) {
+            if ($row['status']) {
                 echo "<div class='roombox roomboxsuperior'>
-						<div class='text-center no-boder'>
-                            <i class='fa-solid fa-bed fa-4x mb-2'></i>
-							<h3>" . $row['roomtype'] . "</h3>
-                            <div class='mb-1'>" . $status . "</div>
-                            <a href='roomdelete.php?id=" . $row['id'] . "'><button class='btn btn-danger'>Delete</button></a>
-						</div>
-                    </div>";
-            } else if ($id == 1) {
-                echo "<div class='roombox roomboxdelux'>
-                        <div class='text-center no-boder'>
-                        <i class='fa-solid fa-bed fa-4x mb-2'></i>
-                        <h3>" . $row['roomtype'] . "</h3>
-                        <div class='mb-1'>" . $status . "</div>
-                        <a href='roomdelete.php?id=" . $row['id'] . "'><button class='btn btn-danger'>Delete</button></a>
-                    </div>
-                    </div>";
-            } else if ($id == 2) {
+                <div class='text-center no-boder'>
+                    <i class='fa-solid fa-bed fa-4x mb-2'></i>
+                    <h4>" . $row['name'] . "</h4>
+                    <h3>P." . $row['roomnumber'] . "</h3>
+                    <div class='mb-1'>Available</div>
+                    <a href='roomdelete.php?id=" . $row['id'] . "'><button class='btn btn-danger'>Delete</button></a>
+                </div>
+            </div>";
+            } else {
                 echo "<div class='roombox roomboguest'>
                 <div class='text-center no-boder'>
-                <i class='fa-solid fa-bed fa-4x mb-2'></i>
-							<h3>" . $row['roomtype'] . "</h3>
-                            <div class='mb-1'>" . $status . "</div>
-                            <a href='roomdelete.php?id=" . $row['id'] . "'><button class='btn btn-danger'>Delete</button></a>
-					</div>
+                    <i class='fa-solid fa-bed fa-4x mb-2'></i>
+                    <h4>" . $row['name'] . "</h4>
+                    <h3>P." . $row['roomnumber'] . "</h3>
+                    <div class='mb-1'>Not Available</div>
+                    <a href='roomdelete.php?id=" . $row['id'] . "'><button class='btn btn-danger'>Delete</button></a>
+                </div>
             </div>";
-            } else if ($id == 3) {
-                echo "<div class='roombox roomboxsingle'>
-                        <div class='text-center no-boder'>
-                        <i class='fa-solid fa-bed fa-4x mb-2'></i>
-                        <h3>" . $row['roomtype'] . "</h3>
-                        <div class='mb-1'>" . $status . "</div>
-                        <a href='roomdelete.php?id=" . $row['id'] . "'><button class='btn btn-danger'>Delete</button></a>
-                    </div>
-                    </div>";
             }
         }
         ?>
