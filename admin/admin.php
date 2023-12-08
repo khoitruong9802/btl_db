@@ -64,13 +64,13 @@ if($usermail == true){
     <div class="mainscreen">
         <iframe class="frames frame1 active" src="./dashboard.php" frameborder="0"></iframe>
         <iframe class="frames frame2" src="./roombook.php" frameborder="0"></iframe>
-        <iframe class="frames frame2" src="./service/service.php" frameborder="0"></iframe>
-        <iframe class="frames frame2" src="./customer/customer.php" frameborder="0"></iframe>
-        <iframe class="frames frame3" src="./payment.php" frameborder="0"></iframe>
-        <iframe class="frames frame4" src="./roomtype/roomtype.php" frameborder="0"></iframe>
-        <iframe class="frames frame4" src="./room/room.php" frameborder="0"></iframe>
-        <iframe class="frames frame4" src="./roombook/roombook.php" frameborder="0"></iframe>
-        <iframe class="frames frame4" src="./staff.php" frameborder="0"></iframe>
+        <iframe class="frames frame3" src="./service/service.php" frameborder="0"></iframe>
+        <iframe class="frames frame4" src="./customer/customer.php" frameborder="0"></iframe>
+        <iframe class="frames frame5" src="./payment.php" frameborder="0"></iframe>
+        <iframe class="frames frame6" src="./roomtype/roomtype.php" frameborder="0"></iframe>
+        <iframe class="frames frame7" src="./room/room.php" frameborder="0"></iframe>
+        <iframe class="frames frame8" src="./roombook/roombook.php" frameborder="0"></iframe>
+        <iframe class="frames frame9" src="./staff.php" frameborder="0"></iframe>
     </div>
 </body>
 
