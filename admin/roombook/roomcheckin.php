@@ -26,7 +26,7 @@ if (isset($_POST['checkinsubmit'])) {
     $result = mysqli_query($conn, $sql);
 
     if (true) {
-        header("Location:../rentroom/rentroom.php");
+        header("Location:roombook.php");
     }
 }
 ?>

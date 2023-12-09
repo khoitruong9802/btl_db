@@ -12,6 +12,8 @@ var frameActive = function (manual) {
 
   btns[manual].classList.add('active');
   frames[manual].classList.add('active');
+  const srcValue = frames[manual].getAttribute('src');
+  frames[manual].src = srcValue;
 };
 
 btns.forEach((btn, i) => {
