@@ -79,7 +79,7 @@ if (isset($_POST['guestdetailedit'])) {
         <form method="POST" class="guestdetailpanelform">
             <div class="head">
                 <h3>EDIT SERVICE</h3>
-                <a href="./service.php"><i class="fa-solid fa-circle-xmark"></i></a>
+                <a href="./customer.php"><i class="fa-solid fa-circle-xmark"></i></a>
             </div>
             <div class="middle">
                 <div class="guestinfo">

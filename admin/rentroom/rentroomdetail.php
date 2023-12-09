@@ -88,10 +88,12 @@ $list_service_arr = mysqli_query($conn, $sql);
 <body>
     <div id="editpanel">
         <form method="POST" class="rentroomdetailpanelform">
+
             <div class="head">
                 <h3>EDIT RESERVATION</h3>
                 <a href="./rentroom.php"><i class="fa-solid fa-circle-xmark"></i></a>
             </div>
+
             <div class="middle">
                 <div class="rentroominfo">
                     <h4>Services</h4>
@@ -157,7 +159,7 @@ $list_service_arr = mysqli_query($conn, $sql);
                             $equal = mysqli_query($conn, $sql);
 
                             if ($equal) {
-                                    // header("Location: rentroomdetail.php");
+                                // header("Location: rentroomdetail.php");
                             } else {
                                 // Check data
                                 echo "<script>swal({
@@ -165,85 +167,54 @@ $list_service_arr = mysqli_query($conn, $sql);
                                         icon: 'error',
                                     });
                                     </script>";
-                            } 
+                            }
                         }
                         ?>
                     </div>
                     <div style="overflow: auto;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Service</th>
-                                <th scope="col">Unit price</th>
-                                <th scope="col">Num</th>
-                                <th scope="col">Payment Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            while ($res = mysqli_fetch_array($list_service_arr)) {
-                            ?>
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td><?php echo $res['name'] ?></td>
-                                    <td><?php echo $res['cost'] ?></td>
-                                    <td><?php echo $res['numberofservice'] ?></td>
-                                    <td><?php echo $res['payment_status'] ?></td>
+                                    <th scope="col">Service</th>
+                                    <th scope="col">Unit price</th>
+                                    <th scope="col">Num</th>
+                                    <th scope="col">Payment Status</th>
                                 </tr>
-                            <?php
-                            }
-                            ?>
+                            </thead>
+                            <tbody>
+                                <?php
+                                while ($res = mysqli_fetch_array($list_service_arr)) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo $res['name'] ?></td>
+                                        <td><?php echo $res['cost'] ?></td>
+                                        <td><?php echo $res['numberofservice'] ?></td>
+                                        <td><?php echo $res['payment_status'] ?></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
                     </div>
-                    
+
                 </div>
 
                 <div class="line"></div>
 
                 <div class="reservationinfo">
                     <h4>Rent Room Details</h4>
-                    <select name="RoomType" class="selectinput">
-                        <option value selected>Type Of Room</option>
-                        <option value="Superior Room">SUPERIOR ROOM</option>
-                        <option value="Deluxe Room">DELUXE ROOM</option>
-                        <option value="Rentroom House">rentroom HOUSE</option>
-                        <option value="Single Room">SINGLE ROOM</option>
-                    </select>
-                    <select name="Bed" class="selectinput">
-                        <option value selected>Bedding Type</option>
-                        <option value="Single">Single</option>
-                        <option value="Double">Double</option>
-                        <option value="Triple">Triple</option>
-                        <option value="Quad">Quad</option>
-                        <option value="None">None</option>
-                    </select>
-                    <select name="NoofRoom" class="selectinput">
-                        <option value selected>No of Room</option>
-                        <option value="1">1</option>
-                        <!-- <option value="1">2</option>
-                        <option value="1">3</option> -->
-                    </select>
-                    <select name="Meal" class="selectinput">
-                        <option value selected>Meal</option>
-                        <option value="Room only">Room only</option>
-                        <option value="Breakfast">Breakfast</option>
-                        <option value="Half Board">Half Board</option>
-                        <option value="Full Board">Full Board</option>
-                    </select>
-                    <div class="datesection">
-                        <span>
-                            <label for="cin"> Check-In</label>
-                            <input name="cin" type="date" value="<?php echo $cin ?>">
-                        </span>
-                        <span>
-                            <label for="cin"> Check-Out</label>
-                            <input name="cout" type="date" value="<?php echo $cout ?>">
-                        </span>
+                    <div>
+                        <h5>Customer: <?php echo $rentroom_arr[0]['name'] ?></h5>
+                        <h5>Check in day: <?php echo $rentroom_arr[0]['checkinday'] ?> </h5>
+                        <h5>Room:<?php foreach ($rentroom_arr as $key => $value) :
+                                        echo '<label class="btn btn-outline-danger">' . $value["roomnumber"] . '</label>';
+                                    endforeach; ?> </h5>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </form>
     </div>
 </body>
