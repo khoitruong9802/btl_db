@@ -201,6 +201,15 @@ if (mysqli_num_rows($re) > 0) {
                             INNER JOIN customer AS c ON r.customer_id = c.id";
         $roombookresult = mysqli_query($conn, $roombooktablesql);
         $nums = mysqli_num_rows($roombookresult);
+
+        $roombooklistsql = "SELECT ar.order_id, r.roomnumber FROM assignroom AS ar
+                            INNER JOIN room AS r ON ar.room_id = r.id";
+        $roombooklistresult = mysqli_query($conn, $roombooklistsql);
+        if (mysqli_num_rows($roombooklistresult) > 0) {
+            while ($row = mysqli_fetch_assoc($roombooklistresult)) {
+                $room_book_list[] = $row;
+            }
+        }
         ?>
         <table class="table table-bordered" id="table-data">
             <thead>
@@ -214,6 +223,7 @@ if (mysqli_num_rows($re) > 0) {
                     <th scope="col">Bookday</th>
                     <th scope="col">Children</th>
                     <th scope="col">Adult</th>
+                    <th scope="col">Rooms</th>
                     <th scope="col">Status</th>
                     <th scope="col" class="action">Action</th>
                     <!-- <th>Delete</th> -->
@@ -233,6 +243,13 @@ if (mysqli_num_rows($re) > 0) {
                         <td><?php echo $res['bookday'] ?></td>
                         <td><?php echo $res['numberofchildren'] ?></td>
                         <td><?php echo $res['numberofadult'] ?></td>
+                        <td><?php 
+                            foreach ($room_book_list as $value) {
+                                if ($value['order_id'] == $res['id']) {
+                                    echo $value['roomnumber'] . ' ';
+                                }
+                            }
+                        ?></td>
                         <td><?php if ($res['status'] == 0) {
                                 echo "Waiting";
                             } else if ($res['status'] == 1) {
