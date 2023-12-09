@@ -90,7 +90,7 @@ if (mysqli_num_rows($re) > 0) {
 
                 <div class="reservationinfo">
                     <h4>Add room</h4>
-                    <select class="selectinput" id="room-type-selected" onchange="search_room()">
+                    <select class="selectinput" id="room-type-selected" onchange="search_room_type()">
                         <option value="-1" selected>All room</option>
                         <?php
                         foreach ($type_of_room_arr as $key => $value) :
@@ -181,103 +181,6 @@ if (mysqli_num_rows($re) > 0) {
         ?>
     </div>
 
-
-    <!-- checkindetailpanel -->
-    <div id="checkindetailpanel">
-        <form action="" method="POST" class="checkindetailpanelform">
-            <div class="head">
-                <h3>CHECK IN</h3>
-                <i class="fa-solid fa-circle-xmark" onclick="checkinclose()"></i>
-
-            </div>
-            <div class="middle">
-                <div class="checkininfo">
-                    <h4>Book information</h4>
-                    <select name="CustomerID" class="selectinput" required>
-                        <option value selected>Select customer</option>
-                        <?php
-                        foreach ($customer_arr as $key => $value) :
-                            echo '<option value="' . $value["id"] . '">' . $value["name"] . " - " . $value["cmnd"] . '</option>';
-                        //close your tags!!
-                        endforeach;
-                        ?>
-                    </select>
-                    <div class="datesection">
-                        <input type="date" id="hiddenDateInput" name="Bookday" hidden>
-                    </div>
-                    <input type="text" name="NumberChild" placeholder="Enter the number of children" required>
-                    <input type="text" name="NumberAdult" placeholder="Enter the number of adult" required>
-                </div>
-            </div>
-            <div class="footer">
-                <button class="btn btn-success" name="booking_submit">Submit</button>
-            </div>
-        </form>
-
-        <!-- ==== room book php ====-->
-        <?php
-        if (isset($_POST['booking_submit'])) {
-
-            $CustomerID = $_POST['CustomerID'];
-            $Checkin = $_POST['Checkin'];
-            $Checkout = $_POST['Checkout'];
-            $Bookday = $_POST['Bookday'];
-            $NumberChild = $_POST['NumberChild'];
-            $NumberAdult = $_POST['NumberAdult'];
-            $StaffID = 1;
-            $Status = 1;
-
-            if (false) {
-                // Check data
-                echo "<script>swal({
-                        title: 'Fill the proper details',
-                        icon: 'error',
-                    });
-                    </script>";
-            } else {
-                $sql = "INSERT INTO roombookinfo(status,echeckinday,echeckoutday,bookday,numberofchildren,numberofadult,customer_id,staff_id) 
-                VALUES ('$Status','$Checkin','$Checkout','$Bookday','$NumberChild','$NumberAdult','$CustomerID','$StaffID')";
-                $result = mysqli_query($conn, $sql);
-
-                if ($result) {
-                    echo "<script>swal({
-                                title: 'Reservation successful',
-                                icon: 'success',
-                            });
-                        </script>";
-                } else {
-                    echo "<script>swal({
-                                    title: 'Something went wrong',
-                                    icon: 'error',
-                                });
-                        </script>";
-                }
-            }
-            $sql = 
-            'SELECT AUTO_INCREMENT
-            FROM information_schema.TABLES
-            WHERE TABLE_SCHEMA = "bluebirdhotel"
-            AND TABLE_NAME = "roombookinfo"';
-            $result = mysqli_query($conn, $sql);
-            $book_id_index = $result->fetch_assoc();
-            $book_id_index = $book_id_index["AUTO_INCREMENT"] - 1;
-
-            $room_list = array(); 
-            foreach ($_POST as $room => $value) {
-                if (substr($room, 0, 4) == "room") {
-                    $room_list[] = (int)substr($room, 4);
-                }
-            }
-            $sql = "INSERT INTO assignroom(order_id, room_id) VALUES";
-            foreach ($room_list as $value) {
-                $sql .= "('$book_id_index','$value'),";
-            }
-            $sql = substr($sql, 0, -1);
-            $result = mysqli_query($conn, $sql);
-        }
-        ?>
-    </div>
-
     <!-- ================================================= -->
     <div class="searchsection">
         <input type="text" name="search_bar" id="search_bar" placeholder="search..." onkeyup="searchFun()">
@@ -289,7 +192,8 @@ if (mysqli_num_rows($re) > 0) {
 
     <div class="roombooktable" class="table-responsive-xl">
         <?php
-        $roombooktablesql = "SELECT * FROM roombookinfo";
+        $roombooktablesql = "SELECT r.*, c.name, c.cmnd FROM roombookinfo AS r 
+                            INNER JOIN customer AS c ON r.customer_id = c.id";
         $roombookresult = mysqli_query($conn, $roombooktablesql);
         $nums = mysqli_num_rows($roombookresult);
         ?>
@@ -297,7 +201,8 @@ if (mysqli_num_rows($re) > 0) {
             <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Customer id</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">CMND</th>
                     <!-- <th scope="col">Staff id</th> -->
                     <th scope="col">Check in</th>
                     <th scope="col">Check out</th>
@@ -316,7 +221,8 @@ if (mysqli_num_rows($re) > 0) {
                 ?>
                     <tr>
                         <td><?php echo $res['id'] ?></td>
-                        <td><?php echo $res['customer_id'] ?></td>
+                        <td><?php echo $res['name'] ?></td>
+                        <td><?php echo $res['cmnd'] ?></td>
                         <td><?php echo $res['echeckinday'] ?></td>
                         <td><?php echo $res['echeckoutday'] ?></td>
                         <td><?php echo $res['bookday'] ?></td>
@@ -324,7 +230,7 @@ if (mysqli_num_rows($re) > 0) {
                         <td><?php echo $res['numberofadult'] ?></td>
                         <td><?php echo $res['status'] ?></td>
                         <td class="action">
-                            <button style="display: inline;" class="btn btn-success" onclick="check_in(<?php echo $res['id'] ?>)">Check In</button></a>
+                            <a href="roomcheckin.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class="btn btn-success">Check In</button></a>
                             <a href="roombookedit.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class="btn btn-primary">Edit</button></a><br>
                             <a href="roombookcancel.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class='btn btn-warning'>Cancel</button></a>
                             <a href="roombookdelete.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class='btn btn-danger'>Delete</button></a>

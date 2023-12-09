@@ -2,6 +2,15 @@
 
 include '../../config.php';
 
+$sql = "SELECT id, name FROM roomtype";
+$re = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($re) > 0) {
+    while ($row = mysqli_fetch_assoc($re)) {
+        $type_of_room_arr[] = $row;
+    }
+}
+
 $sql = "SELECT room.id, room.roomnumber, room.roomtype, roomtype.name
 FROM room
 INNER JOIN roomtype ON room.roomtype = roomtype.id WHERE room.status = 1";
@@ -29,7 +38,14 @@ while ($row = mysqli_fetch_array($re)) {
     $Status = 1;
 }
 
-if (isset($_POST['roombookdetailedit'])) {
+$sql = "SELECT name, cmnd FROM customer";
+$re = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($re) > 0) {
+    $CustomerInfo = mysqli_fetch_assoc($re);
+}
+
+if (isset($_POST['bookdetailedit'])) {
     $CustomerID = $_POST['CustomerID'];
     $Checkin = $_POST['Checkin'];
     $Checkout = $_POST['Checkout'];
@@ -42,6 +58,25 @@ if (isset($_POST['roombookdetailedit'])) {
     $sql = "UPDATE roombookinfo SET status = '$Status',echeckinday = '$Checkin',echeckoutday='$Checkout',bookday='$Bookday'
     ,numberofchildren = '$NumberChild',numberofadult='$NumberAdult',customer_id='$CustomerID',staff_id='$StaffID' WHERE id = '$id'";
 
+    $result = mysqli_query($conn, $sql);
+
+    // UPDATE ASSIGN ROOM
+    $sql = "DELETE FROM assignroom WHERE order_id = $id";
+    $result = mysqli_query($conn, $sql);
+
+    $room_list = array(); 
+    foreach ($_POST as $room => $value) {
+        if (substr($room, 0, 4) == "room") {
+            $room_list[] = (int)substr($room, 4);
+        }
+    }
+    print_r($room_list) ;
+    $sql = "INSERT INTO assignroom(order_id, room_id) VALUES";
+    foreach ($room_list as $value) {
+        $sql .= "('$id','$value'),";
+    }
+    $sql = substr($sql, 0, -1);
+    echo $sql;
     $result = mysqli_query($conn, $sql);
 
     if (true) {
@@ -97,40 +132,32 @@ if (isset($_POST['roombookdetailedit'])) {
         <form method="POST" class="guestdetailpanelform">
             <div class="head">
                 <h3>EDIT SERVICE</h3>
-                <a href="./service.php"><i class="fa-solid fa-circle-xmark"></i></a>
+                <a href="./roombook.php"><i class="fa-solid fa-circle-xmark"></i></a>
             </div>
             <div class="middle">
                 <div class="guestinfo">
                     <h4>Book information</h4>
-                    <select name="CustomerID" class="selectinput" required>
-                        <option value selected>Select customer</option>
-                        <?php
-                        foreach ($customer_arr as $key => $value) :
-                            echo '<option value="' . $value["id"] . '">' . $value["name"] . " - " . $value["cmnd"] . '</option>';
-                        //close your tags!!
-                        endforeach;
-                        ?>
-                    </select>
+                    <input type="text" name="CustomerID" value="<?php echo $CustomerInfo["name"] . " - " . $CustomerInfo["cmnd"]?>" readonly>
                     <div class="datesection">
                         <span>
                             <label for="Checkin"> Check-In</label>
-                            <input id="checkinday" name="Checkin" type="date" onchange="search_room()">
+                            <input id="checkinday" name="Checkin" type="date" onchange="search_room_edit()">
                         </span>
                         <span>
                             <label for="Checkout"> Check-Out</label>
-                            <input id="checkoutday" name="Checkout" type="date" onchange="search_room()">
+                            <input id="checkoutday" name="Checkout" type="date" onchange="search_room_edit()">
                         </span>
                         <input type="date" id="hiddenDateInput" name="Bookday" hidden>
                     </div>
-                    <input type="text" name="NumberChild" placeholder="Enter the number of children" required>
-                    <input type="text" name="NumberAdult" placeholder="Enter the number of adult" required>
+                    <input type="text" name="NumberChild" placeholder="Enter the number of children" value="<?php echo $NumberChild?>" required>
+                    <input type="text" name="NumberAdult" placeholder="Enter the number of adult" value="<?php echo $NumberAdult?>" required>
                 </div>
 
                 <div class="line"></div>
 
                 <div class="reservationinfo">
                     <h4>Add room</h4>
-                    <select class="selectinput" id="room-type-selected" onchange="search_room()">
+                    <select class="selectinput" id="room-type-selected" onchange="search_room_type_edit()">
                         <option value="-1" selected>All room</option>
                         <?php
                         foreach ($type_of_room_arr as $key => $value) :
@@ -154,10 +181,17 @@ if (isset($_POST['roombookdetailedit'])) {
 
             </div>
             <div class="footer">
-                <button class="btn btn-success" name="roombookdetailedit">Edit</button>
+                <button class="btn btn-success" name="bookdetailedit">Edit</button>
             </div>
         </form>
     </div>
+    <script>
+        let order_id = <?php echo $id ?>;
+        let old_book_day = "<?php echo $Bookday?>";
+        let old_checkin_day = "<?php echo $Checkin?>";
+        let old_checkout_day = "<?php echo $Checkout?>";
+    </script>
+    <script src="roombookedit.js"></script>
 </body>
 
 </html>

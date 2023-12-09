@@ -1,50 +1,29 @@
-var detailpanel = document.getElementById("guestdetailpanel");
-
-roombookopen = () => {
-    detailpanel.style.display = "flex";
-}
-roombookclose = () => {
-    detailpanel.style.display = "none";
+const add_booking_day = () => {
+    document.getElementById("hiddenDateInput").value = old_book_day;
+    document.getElementById("checkinday").value = old_checkin_day;
+    document.getElementById("checkoutday").value = old_checkout_day;
 }
 
-//search bar logic using js
-const searchFun = () => {
-    let filter = document.getElementById('search_bar').value.toUpperCase();
-
-    let myTable = document.getElementById("table-data");
-
-    let tr = myTable.getElementsByTagName('tr');
-
-    for (var i = 0; i < tr.length; i++) {
-        let td = tr[i].getElementsByTagName('td')[1];
-
-        if (td) {
-            let textvalue = td.textContent || td.innerHTML;
-
-            if (textvalue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
+const room_checked = () => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '../api/searchCheckedroom.php?id=' + order_id, true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.send();
+    xhr.onload = () => {
+        let message = JSON.parse(xhr.response);
+        // console.log(message);
+        mlen = message.length;
+        for (let i = 0; i < mlen; i++) {
+            let room_number = message[i]['room_id'];
+            // console.log(room_number);
+            document.getElementById("cbroom" + room_number).checked = true;
         }
     }
-
-}
-
-const add_booking_day = () => {
-    let today = new Date();
-    let tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    let formattedDate = today.toISOString().split('T')[0];
-    let formattedDate1 = tomorrow.toISOString().split('T')[0];
-    document.getElementById("hiddenDateInput").value = formattedDate;
-    document.getElementById("checkinday").value = formattedDate;
-    document.getElementById("checkoutday").value = formattedDate1;
 }
 
 let hide_rooms = [];
 
-const search_room_type = () => {
+const search_room_type_edit = () => {
     room_type = document.getElementById('room-type-selected');
     if (room_type.value == "-1") {
         let elements = document.querySelectorAll("#display-list-room *");
@@ -72,7 +51,8 @@ const search_room_type = () => {
     });
 }
 
-const search_room = () => {
+const search_room_edit = () => {
+    // console.log(order_id);
     room_type = document.getElementById('room-type-selected');
     if (room_type.value == "-1") {
         let elements = document.querySelectorAll("#display-list-room *");
@@ -115,7 +95,7 @@ const search_room = () => {
     }
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', '../api/searchRoom.php', true);
+    xhr.open('GET', '../api/searchRoomedit.php?id=' + order_id, true);
     xhr.setRequestHeader('content-type', 'application/json');
     xhr.send();
 
@@ -148,7 +128,10 @@ const search_room = () => {
 
 const auto_run = () => {
     add_booking_day();
-    search_room();
+    search_room_edit();
+    room_checked();
 }
 
-auto_run();
+document.addEventListener('DOMContentLoaded', function() {
+    auto_run();
+});
