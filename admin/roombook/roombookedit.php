@@ -35,7 +35,7 @@ while ($row = mysqli_fetch_array($re)) {
     $NumberChild = $row['numberofchildren'];
     $NumberAdult = $row['numberofadult'];
     $StaffID = 1;
-    $Status = 1;
+    $Status = $row['status'];
 }
 
 $sql = "SELECT name, cmnd FROM customer";
@@ -53,11 +53,11 @@ if (isset($_POST['bookdetailedit'])) {
     $NumberChild = $_POST['NumberChild'];
     $NumberAdult = $_POST['NumberAdult'];
     $StaffID = 1;
-    $Status = 1;
+    $Status = 0;
 
     $sql = "UPDATE roombookinfo SET status = '$Status',echeckinday = '$Checkin',echeckoutday='$Checkout',bookday='$Bookday'
     ,numberofchildren = '$NumberChild',numberofadult='$NumberAdult',customer_id='$CustomerID',staff_id='$StaffID' WHERE id = '$id'";
-
+    echo $sql;
     $result = mysqli_query($conn, $sql);
 
     // UPDATE ASSIGN ROOM
@@ -137,7 +137,8 @@ if (isset($_POST['bookdetailedit'])) {
             <div class="middle">
                 <div class="guestinfo">
                     <h4>Book information</h4>
-                    <input type="text" name="CustomerID" value="<?php echo $CustomerInfo["name"] . " - " . $CustomerInfo["cmnd"]?>" readonly>
+                    <input type="text" name="CustomerID" value="<?php echo $CustomerID?>" hidden>
+                    <input type="text" value="<?php echo $CustomerInfo["name"] . " - " . $CustomerInfo["cmnd"]?>" readonly>
                     <div class="datesection">
                         <span>
                             <label for="Checkin"> Check-In</label>

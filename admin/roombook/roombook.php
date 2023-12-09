@@ -101,13 +101,13 @@ if (mysqli_num_rows($re) > 0) {
                     </select>
                     <div id="display-list-room" style="overflow: auto;">
                         <?php
-                        foreach ($room_arr as $key => $value):
+                        foreach ($room_arr as $key => $value) :
                             echo '<input type="checkbox" class="btn-check' . ' hideroom type' . $value["roomtype"] . '" id="cbroom' . $value["id"] . '" name="room' . $value["id"] . '" autocomplete="off">';
                             echo '<label class="btn btn-outline-danger' . ' hideroom type' . $value["roomtype"] . '" id="lbroom' . $value["id"] . '" for="cbroom' . $value["id"] . '" room' . $value["id"] . '>P.' . $value["roomnumber"] . '</label>';
                         //close your tags!!
                         endforeach;
                         ?>
-                        
+
                     </div>
 
                 </div>
@@ -128,7 +128,7 @@ if (mysqli_num_rows($re) > 0) {
             $NumberChild = $_POST['NumberChild'];
             $NumberAdult = $_POST['NumberAdult'];
             $StaffID = 1;
-            $Status = 1;
+            $Status = 0;
 
             if (false) {
                 // Check data
@@ -156,8 +156,8 @@ if (mysqli_num_rows($re) > 0) {
                         </script>";
                 }
             }
-            $sql = 
-            'SELECT AUTO_INCREMENT
+            $sql =
+                'SELECT AUTO_INCREMENT
             FROM information_schema.TABLES
             WHERE TABLE_SCHEMA = "bluebirdhotel"
             AND TABLE_NAME = "roombookinfo"';
@@ -165,7 +165,7 @@ if (mysqli_num_rows($re) > 0) {
             $book_id_index = $result->fetch_assoc();
             $book_id_index = $book_id_index["AUTO_INCREMENT"] - 1;
 
-            $room_list = array(); 
+            $room_list = array();
             foreach ($_POST as $room => $value) {
                 if (substr($room, 0, 4) == "room") {
                     $room_list[] = (int)substr($room, 4);
@@ -228,12 +228,31 @@ if (mysqli_num_rows($re) > 0) {
                         <td><?php echo $res['bookday'] ?></td>
                         <td><?php echo $res['numberofchildren'] ?></td>
                         <td><?php echo $res['numberofadult'] ?></td>
-                        <td><?php echo $res['status'] ?></td>
+                        <td><?php if ($res['status'] == 0) {
+                            echo "Waiting";
+                        } else if ($res['status'] == 1) {
+                            echo "Check In";
+                        } else if ($res['status'] == 2) {
+                            echo "Cancel";
+                        }
+                        ?></td>
                         <td class="action">
-                            <a href="roomcheckin.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class="btn btn-success">Check In</button></a>
-                            <a href="roombookedit.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class="btn btn-primary">Edit</button></a><br>
-                            <a href="roombookcancel.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class='btn btn-warning'>Cancel</button></a>
-                            <a href="roombookdelete.php?id=<?php echo $res['id'] ?>"><button style="display: inline;" class='btn btn-danger'>Delete</button></a>
+                            <!-- status 0: Waiting -->
+                            <!-- status 1: Check In -->
+                            <!-- status 0: Cancel -->
+                            <?php
+                            if ($res['status'] == 0) {
+                                echo '<a href="roomcheckin.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-success">Check In</button></a>
+                                        <a href="roombookedit.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-primary">Edit</button></a><br>
+                                        <a href="roombookcancel.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-warning">Cancel</button></a>
+                                        <a href="roombookdelete.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-danger">Delete</button></a>';
+                            } else if ($res['status'] == 1) {
+                                echo '<a href="roombookdelete.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-danger">Delete</button></a>';
+                            } else if ($res['status'] == 2) {
+                                echo '<a href="roombookdelete.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-danger">Delete</button></a>';
+                            }
+                            ?>
+
                         </td>
                     </tr>
                 <?php

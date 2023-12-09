@@ -25,6 +25,9 @@ if (isset($_POST['checkinsubmit'])) {
 
     $result = mysqli_query($conn, $sql);
 
+    $sql = "UPDATE roombookinfo SET status = 1 WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+
     if (true) {
         header("Location:roombook.php");
     }
