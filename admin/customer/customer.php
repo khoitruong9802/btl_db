@@ -33,10 +33,15 @@ include '../../config.php';
             </div>
             <div class="middle">
                 <div class="customerinfo">
-                    <h4>customer information</h4>
+                    <h4>Customer information</h4>
                     <input type="text" name="Name" placeholder="Enter customer name" required>
                     <input type="text" name="CMND" placeholder="Enter CMND" required>
-                    <input type="text" name="Gender" placeholder="Enter gender" required>
+                    <select name="Gender" class="form-control selectinput" required>
+                        <option value selected>Gender</option>
+                        <option value=0>Male</option>
+                        <option value=1>Female</option>
+                        <option value=2>Other</option>
+                    </select>
                     <input type="text" name="Address" placeholder="Enter address" required>
                     <input type="text" name="Country" placeholder="Enter country" required>
                 </div>
@@ -45,83 +50,82 @@ include '../../config.php';
             <div class="footer">
                 <button class="btn btn-success" name="customerdetailsubmit">Submit</button>
             </div>
-        </form> 
+        </form>
 
         <!-- ==== room book php ====-->
-        <?php       
-            if (isset($_POST['customerdetailsubmit'])) {
-                $Name = $_POST['Name'];
-                $CMND = $_POST['CMND'];
-                $Gender = $_POST['Gender'];
-                $Address = $_POST['Address'];
-                $Country = $_POST['Country'];
+        <?php
+        if (isset($_POST['customerdetailsubmit'])) {
+            $Name = $_POST['Name'];
+            $CMND = $_POST['CMND'];
+            $Gender = $_POST['Gender'];
+            $Address = $_POST['Address'];
+            $Country = $_POST['Country'];
 
-                if (false) {
-                    echo "<script>swal({
+            if (false) {
+                echo "<script>swal({
                         title: 'Fill the proper details',
                         icon: 'error',
                     });
                     </script>";
-                }
-                else{
-                    $sta = "NotConfirm";
-                    $sql = "INSERT INTO customer(name,cmnd,gender,address,country) VALUES ('$Name','$CMND','$Gender','$Address','$Country')";
-                    $result = mysqli_query($conn, $sql);
+            } else {
+                $sta = "NotConfirm";
+                $sql = "INSERT INTO customer(name,cmnd,gender,address,country) VALUES ('$Name','$CMND','$Gender','$Address','$Country')";
+                $result = mysqli_query($conn, $sql);
 
-                    // if($f1=="NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'Superior Room is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($f2=="NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'customer House is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($f3 == "NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'Si Room is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($f4 == "NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'Deluxe Room is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($result = mysqli_query($conn, $sql))
-                    // {
-                        if ($result) {
-                            echo "<script>swal({
+                // if($f1=="NO")
+                // {
+                //     echo "<script>swal({
+                //         title: 'Superior Room is not available',
+                //         icon: 'error',
+                //     });
+                //     </script>";
+                // }
+                // else if($f2=="NO")
+                // {
+                //     echo "<script>swal({
+                //         title: 'customer House is not available',
+                //         icon: 'error',
+                //     });
+                //     </script>";
+                // }
+                // else if($f3 == "NO")
+                // {
+                //     echo "<script>swal({
+                //         title: 'Si Room is not available',
+                //         icon: 'error',
+                //     });
+                //     </script>";
+                // }
+                // else if($f4 == "NO")
+                // {
+                //     echo "<script>swal({
+                //         title: 'Deluxe Room is not available',
+                //         icon: 'error',
+                //     });
+                //     </script>";
+                // }
+                // else if($result = mysqli_query($conn, $sql))
+                // {
+                if ($result) {
+                    echo "<script>swal({
                                 title: 'Reservation successful',
                                 icon: 'success',
                             });
                         </script>";
-                        } else {
-                            echo "<script>swal({
+                } else {
+                    echo "<script>swal({
                                     title: 'Something went wrong',
                                     icon: 'error',
                                 });
                         </script>";
-                        }
-                    // }
                 }
+                // }
             }
+        }
         ?>
     </div>
 
-    
+
     <!-- ================================================= -->
     <div class="searchsection">
         <input type="text" name="search_bar" id="search_bar" placeholder="search..." onkeyup="searchFun()">
@@ -133,9 +137,9 @@ include '../../config.php';
 
     <div class="roombooktable" class="table-responsive-xl">
         <?php
-            $roombooktablesql = "SELECT * FROM `customer`";
-            $roombookresult = mysqli_query($conn, $roombooktablesql);
-            $nums = mysqli_num_rows($roombookresult);
+        $roombooktablesql = "SELECT * FROM `customer`";
+        $roombookresult = mysqli_query($conn, $roombooktablesql);
+        $nums = mysqli_num_rows($roombookresult);
         ?>
         <table class="table table-bordered" id="table-data">
             <thead>
@@ -152,24 +156,30 @@ include '../../config.php';
             </thead>
 
             <tbody>
-            <?php
-            while ($res = mysqli_fetch_array($roombookresult)) {
-            ?>
-                <tr>
-                    <td><?php echo $res['id'] ?></td>
-                    <td><?php echo $res['name'] ?></td>
-                    <td><?php echo $res['cmnd'] ?></td>
-                    <td><?php echo $res['gender'] ?></td>
-                    <td><?php echo $res['address'] ?></td>
-                    <td><?php echo $res['country'] ?></td>
-                    <td class="action">
-                        <a href="customeredit.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Edit</button></a>
-                        <a href="customerdelete.php?id=<?php echo $res['id'] ?>"><button class='btn btn-danger'>Delete</button></a>
-                    </td>
-                </tr>
-            <?php
-            }
-            ?>
+                <?php
+                while ($res = mysqli_fetch_array($roombookresult)) {
+                    $genderres = "Other";
+                    if ($res['gender'] == 0) {
+                        $genderres = "Male"; 
+                    } else if ($res['gender'] == 1) {
+                        $genderres = "Female";
+                    }
+                ?>
+                    <tr>
+                        <td><?php echo $res['id'] ?></td>
+                        <td><?php echo $res['name'] ?></td>
+                        <td><?php echo $res['cmnd'] ?></td>
+                        <td><?php echo $genderres ?></td>
+                        <td><?php echo $res['address'] ?></td>
+                        <td><?php echo $res['country'] ?></td>
+                        <td class="action">
+                            <a href="customeredit.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Edit</button></a>
+                            <a href="customerdelete.php?id=<?php echo $res['id'] ?>"><button class='btn btn-danger'>Delete</button></a>
+                        </td>
+                    </tr>
+                <?php
+                }
+                ?>
             </tbody>
         </table>
     </div>

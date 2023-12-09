@@ -24,7 +24,6 @@ if (isset($_POST['guestdetailedit'])) {
     $Country = $_POST['Country'];
 
     $sql = "UPDATE customer SET name = '$Name',cmnd = '$CMND',gender='$Gender',address='$Address',country='$Country' WHERE id = '$id'";
-
     $result = mysqli_query($conn, $sql);
 
     if (true) {
@@ -33,7 +32,6 @@ if (isset($_POST['guestdetailedit'])) {
 
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -86,11 +84,15 @@ if (isset($_POST['guestdetailedit'])) {
                     <h4>Customer information</h4>
                     <input type="text" name="Name" placeholder="Enter customer name" value="<?php echo $Name ?>">
                     <input type="text" name="CMND" placeholder="Enter CMND" value="<?php echo $CMND ?>">
-                    <input type="text" name="Gender" placeholder="Enter gender" value="<?php echo $Gender ?>">
+                    <select name="Gender" class="form-control selectinput" required>
+                        <option value selected>Gender</option>
+                        <option value=0 <?php echo $Gender == 0 ? 'selected' : '' ?>>Male</option>
+                        <option value=1 <?php echo $Gender == 1 ? 'selected' : '' ?>>Female</option>
+                        <option value=2 <?php echo $Gender == 2 ? 'selected' : '' ?>>Other</option>
+                    </select>
                     <input type="text" name="Address" placeholder="Enter address" value="<?php echo $Address ?>">
                     <input type="text" name="Country" placeholder="Enter country" value="<?php echo $Country ?>">
                 </div>
-
             </div>
             <div class="footer">
                 <button class="btn btn-success" name="guestdetailedit">Edit</button>

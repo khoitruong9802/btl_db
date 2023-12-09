@@ -39,12 +39,6 @@ const searchFun = () => {
 
 }
 
-const add_booking_day = () => {
-    let today = new Date();
-    let formattedDate = today.toISOString().split('T')[0];
-    document.getElementById("hiddenDateInput").value = formattedDate;
-}
-add_booking_day();
 
 const search_room = (room_type) => {
     if (room_type.value == "-1") {
