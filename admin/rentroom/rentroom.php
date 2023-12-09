@@ -137,7 +137,7 @@ if (mysqli_num_rows($re) > 0) {
                         <td class="action">
                             <?php
                             
-                                echo "<a href='roompayment.php?id=" . $res['id'] . "'><button class='btn btn-success'>Payment</button></a>";
+                                echo "<a href='./roompayment.php?id=" . $res['id'] . "'><button class='btn btn-success'>Payment</button></a>";
                             
                             ?>
                             <a href="rentroomdetail.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Detail</button></a>

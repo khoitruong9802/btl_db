@@ -63,7 +63,7 @@ const search_room_type = () => {
             element.style.display = "";
         });
     }
-
+    
     hide_rooms.forEach(function (room_num) {
         hide_room1 = document.getElementById('cbroom' + room_num);
         hide_room2 = document.getElementById('lbroom' + room_num);
