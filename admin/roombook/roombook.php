@@ -130,53 +130,58 @@ if (mysqli_num_rows($re) > 0) {
             $StaffID = 1;
             $Status = 0;
 
-            if (false) {
-                // Check data
+            try {
+                $room_list = array();
+                foreach ($_POST as $room => $value) {
+                    if (substr($room, 0, 4) == "room") {
+                        $room_list[] = (int)substr($room, 4);
+                    }
+                }
+
+                if (empty($room_list)) {
+                    throw new Exception('RoomEmpty');
+                }
+                $sql = "INSERT INTO roombookinfo(status,echeckinday,echeckoutday,bookday,numberofchildren,numberofadult,customer_id,staff_id) 
+                VALUES ('$Status','$Checkin','$Checkout','$Bookday','$NumberChild','$NumberAdult','$CustomerID','$StaffID')";
+
+                $result = mysqli_query($conn, $sql);
+                $sql =
+                    'SELECT AUTO_INCREMENT
+                    FROM information_schema.TABLES
+                    WHERE TABLE_SCHEMA = "bluebirdhotel"
+                    AND TABLE_NAME = "roombookinfo"';
+            
+                $result = mysqli_query($conn, $sql);
+
+                $book_id_index = $result->fetch_assoc();
+                $book_id_index = $book_id_index["AUTO_INCREMENT"] - 1;
+
+                $sql = "INSERT INTO assignroom(order_id, room_id) VALUES";
+                foreach ($room_list as $value) {
+                    $sql .= "('$book_id_index','$value'),";
+                }
+                $sql = substr($sql, 0, -1);
+                $result = mysqli_query($conn, $sql);
                 echo "<script>swal({
-                        title: 'Fill the proper details',
+                        title: 'Reservation successful',
+                        icon: 'success',
+                    });
+                </script>";
+            } catch (Exception $e) {
+                // Nếu có lỗi, rollback giao dịch và xử lý lỗi
+                $error = $e->getMessage();
+                if ($error === "RoomEmpty") {
+                    $error = "List room must not empty";
+                } else {
+                    $error = "Checkin day must smaller than checkout day!";
+                }
+                echo "<script>swal({
+                        title: '" . $error . "',
                         icon: 'error',
                     });
                     </script>";
-            } else {
-                $sql = "INSERT INTO roombookinfo(status,echeckinday,echeckoutday,bookday,numberofchildren,numberofadult,customer_id,staff_id) 
-                VALUES ('$Status','$Checkin','$Checkout','$Bookday','$NumberChild','$NumberAdult','$CustomerID','$StaffID')";
-                $result = mysqli_query($conn, $sql);
-
-                if ($result) {
-                    echo "<script>swal({
-                                title: 'Reservation successful',
-                                icon: 'success',
-                            });
-                        </script>";
-                } else {
-                    echo "<script>swal({
-                                    title: 'Something went wrong',
-                                    icon: 'error',
-                                });
-                        </script>";
-                }
             }
-            $sql =
-                'SELECT AUTO_INCREMENT
-            FROM information_schema.TABLES
-            WHERE TABLE_SCHEMA = "bluebirdhotel"
-            AND TABLE_NAME = "roombookinfo"';
-            $result = mysqli_query($conn, $sql);
-            $book_id_index = $result->fetch_assoc();
-            $book_id_index = $book_id_index["AUTO_INCREMENT"] - 1;
-
-            $room_list = array();
-            foreach ($_POST as $room => $value) {
-                if (substr($room, 0, 4) == "room") {
-                    $room_list[] = (int)substr($room, 4);
-                }
-            }
-            $sql = "INSERT INTO assignroom(order_id, room_id) VALUES";
-            foreach ($room_list as $value) {
-                $sql .= "('$book_id_index','$value'),";
-            }
-            $sql = substr($sql, 0, -1);
-            $result = mysqli_query($conn, $sql);
+           
         }
         ?>
     </div>
@@ -229,13 +234,13 @@ if (mysqli_num_rows($re) > 0) {
                         <td><?php echo $res['numberofchildren'] ?></td>
                         <td><?php echo $res['numberofadult'] ?></td>
                         <td><?php if ($res['status'] == 0) {
-                            echo "Waiting";
-                        } else if ($res['status'] == 1) {
-                            echo "Check In";
-                        } else if ($res['status'] == 2) {
-                            echo "Cancel";
-                        }
-                        ?></td>
+                                echo "Waiting";
+                            } else if ($res['status'] == 1) {
+                                echo "Check In";
+                            } else if ($res['status'] == 2) {
+                                echo "Cancel";
+                            }
+                            ?></td>
                         <td class="action">
                             <!-- status 0: Waiting -->
                             <!-- status 1: Check In -->
@@ -247,7 +252,6 @@ if (mysqli_num_rows($re) > 0) {
                                         <a href="roombookcancel.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-warning">Cancel</button></a>
                                         <a href="roombookdelete.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-danger">Delete</button></a>';
                             } else if ($res['status'] == 1) {
-                                echo '<a href="roombookdelete.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-danger">Delete</button></a>';
                             } else if ($res['status'] == 2) {
                                 echo '<a href="roombookdelete.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-danger">Delete</button></a>';
                             }
