@@ -5,6 +5,46 @@ include '../../config.php';
 // fetch room data
 $id = $_GET['id'];
 
+if (isset($_POST['addservice'])) {
+
+    $service_id = $_POST['servicename'];
+    $numberofservice = $_POST['numberservice'];
+    $payment = $_POST['paymentstatus'];
+    $current_date = date("Y-m-d");
+    $staff_id = 1;
+
+
+
+    $sql = "INSERT INTO serviceuseinfo(useday, rent_id, staff_id, payment_status) VALUES ('$current_date','$id', '$staff_id','$payment')";
+
+    $insert_service = mysqli_query($conn, $sql);
+
+
+    $sql =
+        'SELECT AUTO_INCREMENT
+        FROM information_schema.TABLES
+        WHERE TABLE_SCHEMA = "bluebirdhotel"
+        AND TABLE_NAME = "serviceuseinfo"';
+    $result = mysqli_query($conn, $sql);
+    $serviceinfo_id = $result->fetch_assoc();
+    $serviceinfo_id = $serviceinfo_id["AUTO_INCREMENT"] - 1;
+
+    $sql = "INSERT INTO serviceuse(serviceuse_id, service_id, numberofservice) VALUES ('$serviceinfo_id','$service_id','$numberofservice')";
+
+    $equal = mysqli_query($conn, $sql);
+
+    if ($equal) {
+        // header("Location: rentroomdetail.php");
+    } else {
+        // Check data
+        echo "<script>swal({
+                title: 'Fill the proper details',
+                icon: 'error',
+            });
+            </script>";
+    }
+}
+
 $sql = "SELECT roomrentinfo.checkinday, roomrentinfo.numberofchildren, roomrentinfo.numberofadult, customer.name, room.roomnumber 
 FROM roomrentinfo 
 JOIN roombookinfo ON roomrentinfo.book_id = roombookinfo.id 
@@ -129,47 +169,6 @@ $list_service_arr = mysqli_query($conn, $sql);
                                 <button type="submit" class="btn btn-success mx-2" name="addservice" style="border-radius: 20px; height:fit-content">Add Service</button>
                             </div>
                         </form>
-                        <?php
-                        if (isset($_POST['addservice'])) {
-
-                            $service_id = $_POST['servicename'];
-                            $numberofservice = $_POST['numberservice'];
-                            $payment = $_POST['paymentstatus'];
-                            $current_date = date("Y-m-d");
-                            $staff_id = 1;
-
-
-
-                            $sql = "INSERT INTO serviceuseinfo(useday, rent_id, staff_id, payment_status) VALUES ('$current_date','$id', '$staff_id','$payment')";
-
-                            $insert_service = mysqli_query($conn, $sql);
-
-
-                            $sql =
-                                'SELECT AUTO_INCREMENT
-                                FROM information_schema.TABLES
-                                WHERE TABLE_SCHEMA = "bluebirdhotel"
-                                AND TABLE_NAME = "serviceuseinfo"';
-                            $result = mysqli_query($conn, $sql);
-                            $serviceinfo_id = $result->fetch_assoc();
-                            $serviceinfo_id = $serviceinfo_id["AUTO_INCREMENT"] - 1;
-
-                            $sql = "INSERT INTO serviceuse(serviceuse_id, service_id, numberofservice) VALUES ('$serviceinfo_id','$service_id','$numberofservice')";
-
-                            $equal = mysqli_query($conn, $sql);
-
-                            if ($equal) {
-                                // header("Location: rentroomdetail.php");
-                            } else {
-                                // Check data
-                                echo "<script>swal({
-                                        title: 'Fill the proper details',
-                                        icon: 'error',
-                                    });
-                                    </script>";
-                            }
-                        }
-                        ?>
                     </div>
                     <div style="overflow: auto;">
                         <table class="table table-hover">
