@@ -123,7 +123,7 @@ const search_room = () => {
                 hide_rooms.push(room_number);
             }
         }
-        console.log(hide_rooms);
+        // console.log(hide_rooms);
         hide_rooms.forEach(function (room_num) {
             hide_room1 = document.getElementById('cbroom' + room_num);
             hide_room2 = document.getElementById('lbroom' + room_num);

@@ -48,30 +48,28 @@ if ($usermail == true) {
     <nav class="sidenav">
         <ul>
             <li class="pagebtn active"><img src="../image/icon/dashboard.png">&nbsp&nbsp&nbsp Dashboard</li>
-            <li class="pagebtn"><img src="../image/icon/bed.png">&nbsp&nbsp&nbsp Service</li>
-            <li class="pagebtn"><img src="../image/icon/bed.png">&nbsp&nbsp&nbsp Customer</li>
-            <li class="pagebtn"><img src="../image/icon/wallet.png">&nbsp&nbsp&nbsp Payment</li>
+            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Customer</li>
+            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Staff</li>
             <li class="pagebtn"><img src="../image/icon/bedroom.png">&nbsp&nbsp&nbsp Room Type</li>
             <li class="pagebtn"><img src="../image/icon/bedroom.png">&nbsp&nbsp&nbsp Rooms</li>
             <li class="pagebtn"><img src="../image/icon/bedroom.png">&nbsp&nbsp&nbsp Room Book New</li>
-            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Staff</li>
-            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Rent Room</li>
-            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Payment method</li>
-            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Discount code</li>
-            <li class="pagebtn"><img src="../image/icon/staff.png">&nbsp&nbsp&nbsp Payment</li>
+            <li class="pagebtn"><img src="../image/icon/bed.png">&nbsp&nbsp&nbsp Service</li>
+            <li class="pagebtn"><img src="../image/icon/bed.png">&nbsp&nbsp&nbsp Rent Room</li>
+            <li class="pagebtn"><img src="../image/icon/wallet.png">&nbsp&nbsp&nbsp Payment method</li>
+            <li class="pagebtn"><img src="../image/icon/wallet.png">&nbsp&nbsp&nbsp Discount code</li>
+            <li class="pagebtn"><img src="../image/icon/wallet.png">&nbsp&nbsp&nbsp Payment</li>
         </ul>
     </nav>
 
     <!-- main section -->
     <div class="mainscreen">
         <iframe class="frames frame1 active" src="./dashboard.php" frameborder="0"></iframe>
-        <iframe class="frames frame2" src="./service/service.php" frameborder="0"></iframe>
         <iframe class="frames frame2" src="./customer/customer.php" frameborder="0"></iframe>
-        <iframe class="frames frame3" src="./payment.php" frameborder="0"></iframe>
+        <iframe class="frames frame4" src="./staff.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./roomtype/roomtype.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./room/room.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./roombook/roombook.php" frameborder="0"></iframe>
-        <iframe class="frames frame4" src="./staff.php" frameborder="0"></iframe>
+        <iframe class="frames frame2" src="./service/service.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./rentroom/rentroom.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./paymethod/paymethod.php" frameborder="0"></iframe>
         <iframe class="frames frame4" src="./discount/discount.php" frameborder="0"></iframe>
