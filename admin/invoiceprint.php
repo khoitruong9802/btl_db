@@ -440,7 +440,7 @@
 	<header>
 		<h1>Invoice</h1>
 		<address>
-			<p>HOTEL BLUE BIRD,</p>
+			<p>Database Project,</p>
 			<p>(+91) 9313346569</p>
 		</address>
 		<span><img alt="" src="../image/logo.jpg"></span>
@@ -514,7 +514,7 @@
 	<aside>
 		<h1><span>Contact us</span></h1>
 		<div>
-			<p align="center">Email :- pankhaniyatushar9@gmail.com || Web :- www.bluebird.com || Phone :- +91 9313346569 </p>
+			<p align="center">Email :- pankhaniyatushar9@gmail.com || Web :- www.databasehotel.com || Phone :- +91 9313346569 </p>
 		</div>
 	</aside>
 

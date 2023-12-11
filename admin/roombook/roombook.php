@@ -47,7 +47,7 @@ if (mysqli_num_rows($re) > 0) {
     <!-- sweet alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="./roombook.css">
-    <title>BlueBird - Admin</title>
+    <title>Database hotel - Admin</title>
 </head>
 
 <body>

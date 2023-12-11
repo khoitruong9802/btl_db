@@ -21,7 +21,7 @@ session_start();
     <!-- loading bar -->
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <link rel="stylesheet" href="./css/flash.css">
-    <title>Hotel blue bird</title>
+    <title>Database Project</title>
 </head>
 
 <body>
@@ -48,7 +48,7 @@ session_start();
 
         <div class="logo">
             <img class="bluebirdlogo" src="./image/bluebirdlogo.png" alt="logo">
-            <p>BLUEBIRD</p>
+            <p>Database Hotel</p>
         </div>
 
         <div class="auth_container">
@@ -110,7 +110,7 @@ session_start();
                         $Email = $_POST['Emp_Email'];
                         $Password = $_POST['Emp_Password'];
 
-                        $sql = "SELECT * FROM user WHERE username = '$Email' AND password = BINARY'$Password'";
+                        $sql = "SELECT * FROM emp_login WHERE Emp_Email = '$Email' AND Emp_Password = BINARY'$Password'";
                         $result = mysqli_query($conn, $sql);
 
                         if ($result->num_rows > 0) {

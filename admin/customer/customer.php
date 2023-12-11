@@ -19,7 +19,7 @@ include '../../config.php';
     <!-- sweet alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="./customer.css">
-    <title>BlueBird - Admin</title>
+    <title>Database hotel - Admin</title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@ include '../../config.php';
                         <option value=2>Other</option>
                     </select>
                     <input type="text" name="Address" placeholder="Enter address" required>
-                    <input id="birthday" name="Birthday" type="date" required>
+                    <!-- <input id="birthday" name="Birthday" type="date" required> -->
                     <input type="text" name="Country" placeholder="Enter country" required>
                 </div>
 
@@ -62,7 +62,7 @@ include '../../config.php';
             $Gender = $_POST['Gender'];
             $Address = $_POST['Address'];
             $Country = $_POST['Country'];
-            $Birthday = $_POST['Birthday'];
+            // $Birthday = $_POST['Birthday'];
 
 
             if (false) {
@@ -73,43 +73,8 @@ include '../../config.php';
                     </script>";
             } else {
                 $sta = "NotConfirm";
-                $sql = "INSERT INTO customer(name,cmnd,gender,address,country, birthday) VALUES ('$Name','$CMND','$Gender','$Address','$Country','$Birthday')";
+                $sql = "INSERT INTO customer(name,cmnd,gender,address,country) VALUES ('$Name','$CMND','$Gender','$Address','$Country')";
                 $result = mysqli_query($conn, $sql);
-
-                // if($f1=="NO")
-                // {
-                //     echo "<script>swal({
-                //         title: 'Superior Room is not available',
-                //         icon: 'error',
-                //     });
-                //     </script>";
-                // }
-                // else if($f2=="NO")
-                // {
-                //     echo "<script>swal({
-                //         title: 'customer House is not available',
-                //         icon: 'error',
-                //     });
-                //     </script>";
-                // }
-                // else if($f3 == "NO")
-                // {
-                //     echo "<script>swal({
-                //         title: 'Si Room is not available',
-                //         icon: 'error',
-                //     });
-                //     </script>";
-                // }
-                // else if($f4 == "NO")
-                // {
-                //     echo "<script>swal({
-                //         title: 'Deluxe Room is not available',
-                //         icon: 'error',
-                //     });
-                //     </script>";
-                // }
-                // else if($result = mysqli_query($conn, $sql))
-                // {
                 if ($result) {
                     echo "<script>swal({
                                 title: 'Reservation successful',
