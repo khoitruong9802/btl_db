@@ -60,4 +60,31 @@ const search_room = (room_type) => {
     }
 }
 
+const add_day = () => {
+    let today = new Date();
+    let formattedDate = today.toISOString().split('T')[0];
+    document.getElementById("checkoutday").value = formattedDate;
+}
+add_day();
+
+const caculate_total_cost = () => {
+    let extra_cost = document.getElementById("extra-cost").value;
+    let vat_cost = document.getElementById("vat-cost").value;
+    let subtotal_payment = document.getElementById("subtotal-payment").value;
+    // let discount = document.getElementById("").value;
+    
+    
+    if (isNaN(parseInt(extra_cost, 10))) {
+        extra_cost = 0;
+    } else {
+        extra_cost = parseInt(extra_cost, 10);
+    }
+    if (isNaN(parseInt(vat_cost, 10))) {
+        vat_cost = 0;
+    } else {
+        vat_cost = parseInt(vat_cost, 10);
+    }
+
+    document.getElementById("total-payment").value = parseInt(subtotal_payment, 10) + extra_cost + vat_cost;
+}
 

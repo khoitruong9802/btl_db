@@ -2,7 +2,6 @@
 
 include '../../config.php';
 
-
 $sql = "SELECT * FROM pay_method";
 $re = mysqli_query($conn, $sql);
 
@@ -11,114 +10,35 @@ if (mysqli_num_rows($re) > 0) {
         $paymethod_arr[] = $row;
     }
 }
+
 // fetch room data
 $id = $_GET['id'];
 
-$sql ="Select * from roombook where id = '$id'";
-$re = mysqli_query($conn,$sql);
-while($row=mysqli_fetch_array($re))
-{
-    $Name = $row['Name'];
-    $Email = $row['Email'];
-    $Country = $row['Country'];
-    $Phone = $row['Phone'];
-    $cin = $row['cin'];
-    $cout = $row['cout'];
-    $noofday = $row['nodays'];
-    $stat = $row['stat'];
+$sql = "SELECT room_payment($id) AS result";
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    // Fetch the result
+    $row = $result->fetch_assoc();
+    $subtotal_cost = $row['result'];
 }
 
-if (isset($_POST['guestdetailedit'])) {
-    $EditName = $_POST['Name'];
-    $EditEmail = $_POST['Email'];
-    $EditCountry = $_POST['Country'];
-    $EditPhone = $_POST['Phone'];
-    $EditRoomType = $_POST['RoomType'];
-    $EditBed = $_POST['Bed'];
-    $EditNoofRoom = $_POST['NoofRoom'];
-    $EditMeal = $_POST['Meal'];
-    $Editcin = $_POST['cin'];
-    $Editcout = $_POST['cout'];
+if (isset($_POST['payment-action'])) {
+    $Checkout = $_POST['Checkout'];
+    $extra = $_POST['extra'];
+    $vat = $_POST['vat'];
+    $subtotal = $_POST['subtotal'];
+    $total = $_POST['total'];
+    $discount = NULL;
+    $paymethod = $_POST['paymethod'];
+    $recept_id = 1;
 
-    $sql = "UPDATE roombook SET Name = '$EditName',Email = '$EditEmail',Country='$EditCountry',Phone='$EditPhone',RoomType='$EditRoomType',Bed='$EditBed',NoofRoom='$EditNoofRoom',Meal='$EditMeal',cin='$Editcin',cout='$Editcout',nodays = datediff('$Editcout','$Editcin') WHERE id = '$id'";
-
-    $result = mysqli_query($conn, $sql);
-
-    $type_of_room = 0;
-    if($EditRoomType=="Superior Room")
-    {
-        $type_of_room = 3000;
-    }
-    else if($EditRoomType=="Deluxe Room")
-    {
-        $type_of_room = 2000;
-    }
-    else if($EditRoomType=="Guest House")
-    {
-        $type_of_room = 1500;
-    }
-    else if($EditRoomType=="Single Room")
-    {
-        $type_of_room = 1000;
-    }
-    
-    
-    if($EditBed=="Single")
-    {
-        $type_of_bed = $type_of_room * 1/100;
-    }
-    else if($EditBed=="Double")
-    {
-        $type_of_bed = $type_of_room * 2/100;
-    }
-    else if($EditBed=="Triple")
-    {
-        $type_of_bed = $type_of_room * 3/100;
-    }
-    else if($EditBed=="Quad")
-    {
-        $type_of_bed = $type_of_room * 4/100;
-    }
-    else if($EditBed=="None")
-    {
-        $type_of_bed = $type_of_room * 0/100;
-    }
-
-    if($EditMeal=="Room only")
-    {
-        $type_of_meal=$type_of_bed * 0;
-    }
-    else if($EditMeal=="Breakfast")
-    {
-        $type_of_meal=$type_of_bed * 2;
-    }
-    else if($EditMeal=="Half Board")
-    {
-        $type_of_meal=$type_of_bed * 3;
-    }
-    else if($EditMeal=="Full Board")
-    {
-        $type_of_meal=$type_of_bed * 4;
-    }
-    
-    // noofday update
-    $psql ="Select * from roombook where id = '$id'";
-    $presult = mysqli_query($conn,$psql);
-    $prow=mysqli_fetch_array($presult);
-    $Editnoofday = $prow['nodays'];
-
-    $editttot = $type_of_room*$Editnoofday * $EditNoofRoom;
-    $editmepr = $type_of_meal*$Editnoofday;
-    $editbtot = $type_of_bed*$Editnoofday;
-
-    $editfintot = $editttot + $editmepr + $editbtot;
-
-    $psql = "UPDATE payment SET Name = '$EditName',Email = '$EditEmail',RoomType='$EditRoomType',Bed='$EditBed',NoofRoom='$EditNoofRoom',Meal='$EditMeal',cin='$Editcin',cout='$Editcout',noofdays = '$Editnoofday',roomtotal = '$editttot',bedtotal = '$editbtot',mealtotal = '$editmepr',finaltotal = '$editfintot' WHERE id = '$id'";
-
-    $paymentresult = mysqli_query($conn,$psql);
+    $sql = "INSERT INTO `bill` (`checkoutday`, `extra`, `vat`, `subtotal`, `total`, `rentid`, `discountcode`, `paymethod_id`, `recept_id`) 
+    VALUES ('$Checkout', '$extra', '$vat', '$subtotal', '$total', '$id', NULL, '$paymethod', '$recept_id')";
+    $paymentresult = mysqli_query($conn, $sql);
 
     if ($paymentresult) {
-            header("Location:roombook.php");
+            header("Location:rentroom.php");
     }
 
 }
@@ -175,15 +95,9 @@ if (isset($_POST['guestdetailedit'])) {
                 <div class="guestinfo">
                     <h4>Payment information</h4>
                     <input type="text" value="Rent room id: <?php echo $id ?>" readonly>
-                    <input id="checkoutday" name="Checkout" type="date" hidden>
-                    <script>
-                            let today = new Date();
-                            let formattedDate = today.toISOString().split('T')[0];
-                            document.getElementById("checkoutday").value = formattedDate1;
-                    </script>
-                    <input type="number" name="extra" placeholder="Enter extra cost" required>
-                    <input type="number" name="vat" placeholder="Enter VAT cost" required>
-                    <input type="text" name="vat" placeholder="Enter discount code">
+                    <input type="number" name="extra" id="extra-cost" placeholder="Enter extra cost" onchange="caculate_total_cost()" required>
+                    <input type="number" name="vat" id="vat-cost" placeholder="Enter VAT cost" onchange="caculate_total_cost()" required>
+                    <input type="text" name="discount" id="discount-code" placeholder="Enter discount code" onchange="caculate_total_cost()">
                     <select name="paymethod" class="selectinput" required>
                         <option value selected>Select payment method</option>
                         <?php
@@ -199,12 +113,19 @@ if (isset($_POST['guestdetailedit'])) {
 
                 <div class="reservationinfo">
                     <h4>Cost</h4>
+                    <label for="checkoutday">Check out day</label>
+                    <input id="checkoutday" name="Checkout" type="date" readonly>
+                    <label for="subtotal-payment">Subtotal</label>
+                    <input type="number" id="subtotal-payment" name="subtotal" value="<?php echo $subtotal_cost?>" readonly>
+                    <label for="subtotal-payment">Total</label>
+                    <input type="number" id="total-payment" name="total" value="<?php echo $subtotal_cost?>" readonly>
                 </div>
             </div>
             <div class="footer">
-                <button class="btn btn-success" name="guestdetailedit">Edit</button>
+                <button class="btn btn-success" name="payment-action">Confirm</button>
             </div>
         </form>
     </div>
+    <script src="./rentroom.js"></script>
 </body>
 </html>

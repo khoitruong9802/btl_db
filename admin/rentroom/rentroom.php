@@ -2,22 +2,19 @@
 session_start();
 include '../../config.php';
 
-$sql = "SELECT id, name, cmnd FROM customer";
+$sql = "SELECT rentid FROM bill";
 $re = mysqli_query($conn, $sql);
 
+$bill_room_rent = [];
 if (mysqli_num_rows($re) > 0) {
     while ($row = mysqli_fetch_assoc($re)) {
-        $customer_arr[] = $row;
+        $bill_room_rent[] = $row;
     }
 }
 
-$sql = "SELECT id, name FROM roomtype";
-$re = mysqli_query($conn, $sql);
-
-if (mysqli_num_rows($re) > 0) {
-    while ($row = mysqli_fetch_assoc($re)) {
-        $type_of_room_arr[] = $row;
-    }
+$bill_room_rent_arr = [];
+foreach ($bill_room_rent as $value) {
+    $bill_room_rent_arr[] = $value['rentid'];
 }
 
 $sql = "SELECT roomrentinfo.id, roomrentinfo.checkinday, roomrentinfo.numberofchildren, roomrentinfo.numberofadult, customer.name 
@@ -26,11 +23,6 @@ JOIN roombookinfo ON roomrentinfo.book_id = roombookinfo.id
 JOIN customer ON roombookinfo.customer_id = customer.id";
 $reql = mysqli_query($conn, $sql);
 
-if (mysqli_num_rows($re) > 0) {
-    while ($row = mysqli_fetch_assoc($re)) {
-        $room_arr[] = $row;
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -136,8 +128,11 @@ if (mysqli_num_rows($re) > 0) {
                         <td><?php echo $res['numberofadult'] ?></td>
                         <td class="action">
                             <?php
-                            
-                                echo "<a href='./roompayment.php?id=" . $res['id'] . "'><button class='btn btn-success'>Payment</button></a>";
+                                if (in_array($res['id'], $bill_room_rent_arr)) {
+
+                                } else {
+                                    echo "<a href='./roompayment.php?id=" . $res['id'] . "'><button class='btn btn-success'>Payment</button></a>";
+                                }
                             
                             ?>
                             <a href="rentroomdetail.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Detail</button></a>

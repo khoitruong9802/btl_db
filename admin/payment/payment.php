@@ -23,103 +23,7 @@ include '../../config.php';
 </head>
 
 <body>
-    <!-- paymentdetailpanel -->
 
-    <div id="paymentdetailpanel">
-        <form action="" method="POST" class="paymentdetailpanelform">
-            <div class="head">
-                <h3>payment</h3>
-                <i class="fa-solid fa-circle-xmark" onclick="addpaymentclose()"></i>
-            </div>
-            <div class="middle">
-                <div class="paymentinfo">
-                    <h4>Payment information</h4>
-                    <input type="text" name="Name" placeholder="Enter payment name" required>
-                    <input type="text" name="Cost" placeholder="Enter cost" required>
-                    <input type="text" name="Unit" placeholder="Enter unit" required>
-                    <input type="text" name="Detail" placeholder="Enter detail" required>
-                </div>
-
-            </div>
-            <div class="footer">
-                <button class="btn btn-success" name="paymentdetailsubmit">Submit</button>
-            </div>
-        </form> 
-
-        <!-- ==== room book php ====-->
-        <?php       
-            if (isset($_POST['paymentdetailsubmit'])) {
-                $Name = $_POST['Name'];
-                $Cost = $_POST['Cost'];
-                $Unit = $_POST['Unit'];
-                $Detail = $_POST['Detail'];
-
-                if (false) {
-                    echo "<script>swal({
-                        title: 'Fill the proper details',
-                        icon: 'error',
-                    });
-                    </script>";
-                }
-                else{
-                    $sta = "NotConfirm";
-                    $sql = "INSERT INTO payment(name,cost,unit,detail) VALUES ('$Name','$Cost','$Unit','$Detail')";
-                    $result = mysqli_query($conn, $sql);
-
-                    // if($f1=="NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'Superior Room is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($f2=="NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'payment House is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($f3 == "NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'Si Room is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($f4 == "NO")
-                    // {
-                    //     echo "<script>swal({
-                    //         title: 'Deluxe Room is not available',
-                    //         icon: 'error',
-                    //     });
-                    //     </script>";
-                    // }
-                    // else if($result = mysqli_query($conn, $sql))
-                    // {
-                        if ($result) {
-                            echo "<script>swal({
-                                title: 'Reservation successful',
-                                icon: 'success',
-                            });
-                        </script>";
-                        } else {
-                            echo "<script>swal({
-                                    title: 'Something went wrong',
-                                    icon: 'error',
-                                });
-                        </script>";
-                        }
-                    // }
-                }
-            }
-        ?>
-    </div>
-
-    
     <!-- ================================================= -->
     <div class="searchsection">
         <input type="text" name="search_bar" id="search_bar" placeholder="search..." onkeyup="searchFun()">
@@ -130,42 +34,44 @@ include '../../config.php';
     </div>
 
     <div class="roombooktable" class="table-responsive-xl">
-        <?php
-            $roombooktablesql = "SELECT * FROM `payment`";
-            $roombookresult = mysqli_query($conn, $roombooktablesql);
-            $nums = mysqli_num_rows($roombookresult);
-        ?>
         <table class="table table-bordered" id="table-data">
+            <?php
+            $paymenttable = "SELECT bill.*, pay_method.name FROM `bill`
+                INNER JOIN pay_method ON bill.paymethod_id = pay_method.id";
+            $paymenttable_result = mysqli_query($conn, $paymenttable);
+            $nums = mysqli_num_rows($paymenttable_result);
+            ?>
             <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Cost</th>
-                    <th scope="col">Unit</th>
-                    <th scope="col">Detail</th>
-                    <th scope="col" class="action">Action</th>
+                    <th scope="col">Check out</th>
+                    <th scope="col">Extra</th>
+                    <th scope="col">VAT</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">Payment method</th>
                     <!-- <th>Delete</th> -->
                 </tr>
             </thead>
 
             <tbody>
-            <?php
-            while ($res = mysqli_fetch_array($roombookresult)) {
-            ?>
-                <tr>
-                    <td><?php echo $res['id'] ?></td>
-                    <td><?php echo $res['name'] ?></td>
-                    <td><?php echo $res['cost'] ?></td>
-                    <td><?php echo $res['unit'] ?></td>
-                    <td><?php echo $res['detail'] ?></td>
-                    <td class="action">
-                        <a href="paymentedit.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Edit</button></a>
-                        <a href="paymentdelete.php?id=<?php echo $res['id'] ?>"><button class='btn btn-danger'>Delete</button></a>
-                    </td>
-                </tr>
-            <?php
-            }
-            ?>
+                <?php
+                while ($res = mysqli_fetch_array($paymenttable_result)) {
+                ?>
+                    <tr>
+                        <td><?php echo $res['id'] ?></td>
+                        <td><?php echo $res['checkoutday'] ?></td>
+                        <td><?php echo $res['extra'] ?></td>
+                        <td><?php echo $res['vat'] ?></td>
+                        <td><?php echo $res['subtotal'] ?></td>
+                        <td><?php echo $res['total'] ?></td>
+                        <td><?php echo $res['discountcode'] ?></td>
+                        <td><?php echo $res['name'] ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
             </tbody>
         </table>
     </div>
