@@ -98,6 +98,10 @@ const search_room = () => {
     });
     
     hide_rooms = [];
+    let check_in_day = document.getElementById("checkinday").value;
+    let check_out_day = document.getElementById("checkoutday").value;
+    check_in_day = new Date(check_in_day);
+    check_out_day = new Date(check_out_day);
 
     let xhr = new XMLHttpRequest();
     xhr.open('GET', '../api/searchRoom.php', true);
@@ -108,18 +112,18 @@ const search_room = () => {
         let message = JSON.parse(xhr.response);
         // console.log(message);
         mlen = message.length;
-        // for (let i = 0; i < mlen; i++) {
-        //     let room_number = message[i]['room_id'];
-        //     let ch_in = message[i]['echeckinday'];
-        //     let ch_out = message[i]['echeckoutday'];
-        //     ch_in = new Date(ch_in);
-        //     ch_out = new Date(ch_out);
-        //     if (ch_in >= check_out_day || ch_out <= check_in_day) {
-        //     } else {
-        //         hide_rooms.push(room_number);
-        //     }
-        // }
-        // console.log(hide_rooms);
+        for (let i = 0; i < mlen; i++) {
+            let room_number = message[i]['room_id'];
+            let ch_in = message[i]['echeckinday'];
+            let ch_out = message[i]['echeckoutday'];
+            ch_in = new Date(ch_in);
+            ch_out = new Date(ch_out);
+            if (ch_in >= check_out_day || ch_out <= check_in_day) {
+            } else {
+                hide_rooms.push(room_number);
+            }
+        }
+        console.log(hide_rooms);
         hide_rooms.forEach(function (room_num) {
             hide_room1 = document.getElementById('cbroom' + room_num);
             hide_room2 = document.getElementById('lbroom' + room_num);

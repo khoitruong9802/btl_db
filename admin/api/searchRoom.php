@@ -3,7 +3,7 @@
 
     $sql ="SELECT assignroom.room_id, roombookinfo.echeckinday, roombookinfo.echeckoutday
     FROM assignroom
-    INNER JOIN roombookinfo ON assignroom.order_id = roombookinfo.id;";
+    INNER JOIN roombookinfo ON assignroom.order_id = roombookinfo.id WHERE roombookinfo.status <> 2;";
 
     $result = mysqli_query($conn,$sql);
 

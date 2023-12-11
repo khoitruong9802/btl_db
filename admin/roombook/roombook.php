@@ -145,7 +145,6 @@ if (mysqli_num_rows($re) > 0) {
                 VALUES ('$Status','$Checkin','$Checkout','$Bookday','$NumberChild','$NumberAdult','$CustomerID','$StaffID')";
 
                 $result = mysqli_query($conn, $sql);
-                print_r($sql);
                 $sql =
                     'SELECT AUTO_INCREMENT
                     FROM information_schema.TABLES
@@ -264,7 +263,7 @@ if (mysqli_num_rows($re) > 0) {
                         <td class="action">
                             <!-- status 0: Waiting -->
                             <!-- status 1: Check In -->
-                            <!-- status 0: Cancel -->
+                            <!-- status 2: Cancel -->
                             <?php
                             if ($res['status'] == 0) {
                                 echo '<a href="roomcheckin.php?id=' . $res['id'] . '"><button style="display: inline;" class="btn btn-success">Check In</button></a>
