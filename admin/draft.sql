@@ -41,3 +41,15 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE total_service_use(IN begin_date DATE, IN end_date DATE)
+BEGIN
+	SELECT s.name, SUM(su.numberofservice) AS total_use FROM serviceuse AS su
+    INNER JOIN service AS s ON su.service_id = s.id
+    INNER JOIN serviceuseinfo AS sui ON su.serviceuse_id = sui.id
+    WHERE sui.useday BETWEEN begin_date AND end_date
+    GROUP BY su.service_id ORDER BY total_use;
+END $$
+DELIMITER ;

@@ -2,6 +2,8 @@
 session_start();
 include '../../config.php';
 
+// include '../controllers/indexController.php'
+
 ?>
 
 <!DOCTYPE html>
@@ -179,6 +181,7 @@ include '../../config.php';
                         <td class="action">
                             <a href="customeredit.php?id=<?php echo $res['id'] ?>"><button class="btn btn-primary">Edit</button></a>
                             <a href="customerdelete.php?id=<?php echo $res['id'] ?>"><button class='btn btn-danger'>Delete</button></a>
+                            <a href="../controllers/indexController.php?id=<?php echo $res['id'] ?>&action=deleteCutomer"><button class='btn btn-danger'>Delete</button></a>
                         </td>
                     </tr>
                 <?php

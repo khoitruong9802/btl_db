@@ -145,6 +145,7 @@ if (mysqli_num_rows($re) > 0) {
                 VALUES ('$Status','$Checkin','$Checkout','$Bookday','$NumberChild','$NumberAdult','$CustomerID','$StaffID')";
 
                 $result = mysqli_query($conn, $sql);
+                print_r($sql);
                 $sql =
                     'SELECT AUTO_INCREMENT
                     FROM information_schema.TABLES
@@ -172,6 +173,8 @@ if (mysqli_num_rows($re) > 0) {
                 $error = $e->getMessage();
                 if ($error === "RoomEmpty") {
                     $error = "List room must not empty";
+                } else if ($error === "ValidDate") {
+                    $error = "Khách hàng phải trên 18 tuổi!";
                 } else {
                     $error = "Checkin day must smaller than checkout day!";
                 }

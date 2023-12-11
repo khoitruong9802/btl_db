@@ -110,7 +110,7 @@ session_start();
                         $Email = $_POST['Emp_Email'];
                         $Password = $_POST['Emp_Password'];
 
-                        $sql = "SELECT * FROM emp_login WHERE Emp_Email = '$Email' AND Emp_Password = BINARY'$Password'";
+                        $sql = "SELECT * FROM user WHERE username = '$Email' AND password = BINARY'$Password'";
                         $result = mysqli_query($conn, $sql);
 
                         if ($result->num_rows > 0) {

@@ -14,6 +14,7 @@ while($row=mysqli_fetch_array($re))
     $Gender = $row['gender'];
     $Address = $row['address'];
     $Country = $row['country'];
+    $Birthday = $row['birthday'];
 }
 
 if (isset($_POST['guestdetailedit'])) {
@@ -22,8 +23,9 @@ if (isset($_POST['guestdetailedit'])) {
     $Gender = $_POST['Gender'];
     $Address = $_POST['Address'];
     $Country = $_POST['Country'];
+    $Birthday = $_POST['Birthday'];
 
-    $sql = "UPDATE customer SET name = '$Name',cmnd = '$CMND',gender='$Gender',address='$Address',country='$Country' WHERE id = '$id'";
+    $sql = "UPDATE customer SET name = '$Name',cmnd = '$CMND',gender='$Gender',address='$Address',country='$Country', birthday = '$Birthday' WHERE id = '$id'";
     $result = mysqli_query($conn, $sql);
 
     if (true) {
@@ -92,6 +94,8 @@ if (isset($_POST['guestdetailedit'])) {
                     </select>
                     <input type="text" name="Address" placeholder="Enter address" value="<?php echo $Address ?>">
                     <input type="text" name="Country" placeholder="Enter country" value="<?php echo $Country ?>">
+                    <input type="date" name="Birthday" value="<?php echo $Birthday ?>" required>
+
                 </div>
             </div>
             <div class="footer">
